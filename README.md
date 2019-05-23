@@ -17,3 +17,26 @@ My goals as a course creator:
 
 Note: okay so a lot of the world still use python 2.7. The material will be in python3 by default. Any relevant differences between 3 and 2 I WILL HIGHLIGHT. 
 
+
+outline: 
+
+* data types and operations 
+	- numberic 
+	- sequences? containers? 
+* functions
+* most commonly used built-in functions
+* modules
+* imports
+* classes and objects 
+* iterators 
+* generators
+* file I/O 
+* namespaces 
+* strings 
+* style 
+* testing
+* PEP 
+* looking stuff up / self-learning 
+* project ideas / exercises
+
+
