@@ -9,6 +9,8 @@ Python 3.x
 
 All integer types are long (https://www.python.org/dev/peps/pep-0237/), so there is no platform-dependent precision difference. 
 
+integers can be created with with the `int` builtin function which takes either a number or a string or as a literal without a decimal point such as `5`.
+
 ### Readings
 
 What is the difference between precision and scale? 
