@@ -77,5 +77,4 @@ Finally, we apply addition which has the lowest precedence (`2 + 45`) and get 47
 
 Any precedence rule can be overriden by wrapping expressions in parenthesis. This is true in math and it's also true in Python. So if we really wanted to perform the addition of `2 + 5` first, we would wrap it in parenthesis so it's `(2 + 5)`.
 
-
 Arithmetic operators are also not the only operators in python subject to precedence rules. See the docs for a the complete operator [precedence table](https://docs.python.org/3/reference/expressions.html#operator-precedence).

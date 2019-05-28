@@ -20,14 +20,19 @@ Note: okay so a lot of the world still use python 2.7. The material will be in p
 
 outline: 
 
-* data types and operations 
+* data types and common operations 
 	- numberic 
-	- sequences? containers? 
-* functions
-* most commonly used built-in functions
-* modules
-* imports
-* classes and objects 
+	- containers
+		- ordered (sequences)
+			- string, list, tuple
+		- unordered
+			- sets, maps
+
+after built-in data types
+- functions
+- classes 
+- modules
+
 * iterators 
 * generators
 * file I/O 
