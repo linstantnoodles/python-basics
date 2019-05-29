@@ -1,5 +1,67 @@
 # Scopes
 
+From [wikipedia](https://en.wikipedia.org/wiki/Scope_(computer_science))
+
+> In computer programming, the scope of a name binding – an association of a name to an entity, such as a variable – is the region of a computer program where the binding is valid: where the name can be used to refer to the entity.
+
+In Python, there are many ways to create name bindings. One common way is in using assignment statements to bind data to identifiers such as: 
+
+```python 
+foo = "hello world"
+```
+
+Different sets of name-bindings may be visible at any given point during the lifetime of the program. This is known as the *execution context*.  
+
+So one is a source-code concept. Namely, which _textual_ regions of the code will this name binding be available? 
+Context is a run-time concept. So, when the program is running, what set of names are available?
+
+In python, there are _three_ types of scope from the most narrow to the widest (covers the greatest regions of the program)
+
+* Module (global scope)
+
+This is accessible throughout the entire file (module).
+
+* Class (class scope)
+
+This is accessible throughout the entire body of the class (Except inside functions!)
+
+* Function (function scope)
+
+This is accessible throughout the entire body of the function (including all nested functions).
+
+While knowing an entities scope is important, in practice what you end up thinking about the most is _context_ or which set of entities are actually visible at a given point in the program. For example, looking at a specific function, what is the _set_ of all visible entities at my disposal?
+
+To know this, we must understand: 
+
+1) How python represents contexts
+2) How python resolves values of names within a given context (name resolution)
+
+In Python, _context_ is represented by namespaces (which are actually dictionary types). 
+
+* Local namespace
+* Module namespace
+* Built-in namespace
+
+You can think of these namespaces as being chained together. All the namespaces accessible at a given point is the context of a python program. 
+
+The way name resolution works is: 
+
+    # Local function namespace
+    # Enclosing function namespace - starting with the nearest
+    # Module namespace
+    # Built-in name space
+
+Lets bring the two concepts together. If we define a name-binding at the module level, it has module _scope_ because that name _can_ be accessed throughout the entire module. If we have a function defined within the module that references that variable, then during the functions _execution_ or _runtime_, that variable will be part of the functions _context_ (among potentially other name bindings). Once that variable is actually referenced, python performs name resolution in the current context by looking up a series of namespaces for the variable. First, local. Doesn't find it. Since there's no enclosing function, it looks in the module namespace and finds it!
+
+> A scope is a textual region of a Python program where a namespace is directly accessible. “Directly accessible” here means that an unqualified reference to a name attempts to find the name in the namespace.
+
+
+
+
+
+
+This "region of a program" in python 
+
 Up til now, every identifier we refer to is assumed to be available. 
 
 There's 3 levels of scoping: 
@@ -40,9 +102,6 @@ print (TestClass.name)
 
 #  There are two kinds of valid attribute names, data attributes and methods.
 #  When a non-data attribute of an instance is referenced, the instance’s class is searched. If the name denotes a valid class attribute that is a function object, a method object is created by packing (pointers to) the instance object and the function object just found together in an abstract object: this is the method object. When the method object is called with an argument list, a new argument list is constructed from the instance object and the argument list, and the function object is called with this new argument list.
-
-
-
 
 
 mylist = [1, 2, 3]
@@ -167,7 +226,31 @@ A scope is a textual region of a Python program where a namespace is directly ac
 # in plain english, if a reference to the name tries to find it in THAT namespace in that part of the code, then that's the scope
 # this is another way of saying "the regions where this binding can be accessed"
 
-# wikipedia:  scope of a name binding – an association of a name to an entity, such as a variable – is the region of a computer program where the binding is valid: 
+# wikipedia:  scope of a na
+Note: okay so a lot of the world still use python 2.7. The material will be in python3 by default. Any relevant differences between 3 and 2 I WILL HIGHLIGHT. 
+
+
+outline: 
+
+* data types and common operations 
+	- numberic 
+	- containers
+		- ordered (sequences)
+			- string, list, tuple
+		- unordered
+			- sets, maps
+
+after built-in data types
+- functions
+- classes 
+- modules
+
+* iterators 
+* generators
+* file I/O 
+* namespaces 
+* strings 
+* style me binding – an association of a name to an entity, such as a variable – is the region of a computer program where the binding is valid: 
 
 # Although scopes are determined statically , they are used dynamically. At any time during execution, there are at least three nested scopes whose namespaces are directly accessible:
 
