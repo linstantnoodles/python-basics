@@ -83,7 +83,7 @@ def foo()
 
 #### Class scope
 
-I'm covering class scope last because it is a special case because  unlike module and function scopes which represent the entirety of the region, it excludes functions.
+I'm covering class scope last because it is a special case. Unlike module and function scopes which represent the entirety of the region, it excludes functions.
 
 Here's what I mean:
 
@@ -103,9 +103,11 @@ Traceback (most recent call last):
 NameError: name 'age' is not defined
 ```
 
+If class scope covered the entirety of the function, we would expect `age` to be defined within the function `greet`. However, class scope does not extend into the functions and hence python throws a name error during execution.
+
 ## Scope vs Context
 
-Scope is a source-code concept. Even though defining it in the first place requires us to have knowledge of how the language binds names at run-time, when we specify the scope of a name-binding, we are not specifying whether the name-binding is actually visible during a point in the execution of the program.
+Scope is a source-code concept. Although defining it in the first place requires us to have knowledge of how the language binds names at run-time, when we specify the scope of a name-binding, we are not specifying whether the name-binding is actually visible during a point in the execution of the program.
 
 Scoping rules lets us re-use identifiers in different regions in our program without [name collisions](https://en.wikipedia.org/wiki/Name_collision), but that also leads to [shadowing](https://en.wikipedia.org/wiki/Variable_shadowing).
 
