@@ -7,7 +7,9 @@ Lets go over the iterator pattern first and then we'll discuss how python suppor
 
 The iterator pattern lets you access elements from a container in sequence without knowledge of its underlying implementation. The notion of a _container_ isn't tied to any specific storage mechanism. For example, the container can be an array. Or a linked list. Or a tree. It doesn't matter - the same interface is exposed for you to traverse the container.
 
-Here's a common UML (Unified Modeling Language) diagram of the pattern: https://en.wikipedia.org/wiki/Iterator_pattern#/media/File:Iterator_UML_class_diagram.svg
+Here's a common UML (Unified Modeling Language) diagram of the pattern: 
+
+![iterator pattern uml](https://en.wikipedia.org/wiki/Iterator_pattern#/media/File:Iterator_UML_class_diagram.svg)
 
 There's two parallel parent child hierachies: the aggregate and the iterator. The _concrete_ aggregate is usually a container that wraps the actual container and knows how to create an iterator through its method _iterator_.
 
