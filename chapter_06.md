@@ -1,95 +1,103 @@
-# Operations 
+# Relational and Logical Operations 
 
-## Numeric 
-	
-## Boolean / Logical 
+From [python doc](https://docs.python.org/2.0/ref/objects.html)
 
-## Comparison / relational
+> Objects are Python's abstraction for data. All data in a Python program is represented by objects or by relations between objects.
 
-1 < 3 
-5 > 2 
+## Relational (comparison) Operations
 
-10.0 < 4
-10 == 3 
+Python supports the following comparison operators: 
 
-what happens when we deal with non-numeric types? 
+* == (equal)
+* !== (not equal)
+* < (less than)
+* <= (less than or equal)
+* > (greater than)
+* >= (greater than or equal)
+* is (lol)
 
-in python, comparison operators can accept mixed types. they compare the _value_ of objects. the value of numeric types is just their nuermic values. 
+First of all, any comparison between anything requires a common unit of measure. Is thix apple less than that orange? Um, maybe. What's the unit? Are we talking about weight? mass? fiber content? 
 
-what is the _value_ of non-numeric types? such as strings? sequences in general? 
+So before we can talk about comparisons, we have to talk about the objects we're comparing.
 
-lets discuss strings 
-what happens when you compare value sof two different types? 
+Python objects have three dimensions / units with which comparisons can be done: 
 
-first, types of comparison operators: <, > , <=, >=, ==, !==, is 
-"a" < 5
+* Identity
+* Type
+* Value
 
-> The default behavior for equality comparison (== and !=) is based on the identity of the objects. Hence, equality comparison of instances with the same identity results in equ
+Object identity and type never change. Conversions such as `int('5')` create new objects. Object value can change. The types of objects whose values can change are *mutable* and the ones whose values cannot chane are *immutable*. For example, strings are immutable but many sequences such as lists are mutable.
 
-so all types inherit from object. and the default behavior that come with object are for two operators == and != and it's based not on value but identity. 
+Comparison on identity is easy. It's either the same object or it's not.
 
-this can be overriden by specific types. all other comparison operators are implemented by specific types.
+Comparison on type is also easy. It's either the same type or it's not.
 
-i.e for numeric types, == doesn't do identity, but value oruru
+Comparison on value is not so easy. What is the value of the integer `1`? (Not a trick question). Now, what's the value of our set `{1, 2, 3}`? Or a function? Or some custom object you created yourself? 
 
-lets talk about these comparions for strings and sequences: 
+Whether a comparison is done on identity, type, or value depends both on the comparison operator we're using and the objects we're comparing.
 
-1. strings 
+The default behavior for equality comparison (== and !=) is based on the identity of the objects. This is because all types inherit from the base object and the behavior of the equality operators for the base object is identity comparison. The equality operators are the only operators with default behavior. The behavior of all other comparison operators need to be implemented by different object types.
 
-> Strings (instances of str) compare lexicographically using the numerical Unicode code points (the result of the built-in function ord()) of their characters. [3]
+The `is` operator is a special case. It _always_ compares by identity and cannot be overriden.	
 
-strings are sequences in python. it's a sequence of characters. the way python handles comparison operators with sequences is to compare the individual elements, starting from the left. if the value of its component parts are equal, the sequences are equal. 
+### Numeric 
 
-now, "component" parts can be all the same type, or different types. they can even be sequences themselves! 
-if they are sequences themselves, those are compared the same way, recursively.
+All numeric comparisons (including equality comparison) are based on value. 
 
-now, different sequence types are _never_ equal.
-
-python2.x just returns false
-
->>> [] < {}
+```python
+>>> a = 123
+>>> b = 123
+>>> a == b
+True
+>>> a < b
 False
+>>>
+```
 
-python3.x actually throws an error
->>> [] < {}
-Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>
-TypeError: '<' not supported between instances of 'list' and 'dict'
+You can also compare different types of numerics, such as integers and floats.
+
+```python
+>>> 123.1 > 123
+True
+```
+
+Outside of numeric types, comparisons across different types isn't supported. In python 3.x, you'll get an error if you attempt to compare different types. Python 2.x is more forgiving and _does_ return a value but the behavior (while consistent) is [not part of the language spec](https://stackoverflow.com/questions/3270680/how-does-python-2-compare-string-and-int-why-do-lists-compare-as-greater-than-n).
+
+### Ordered containers (sequences)
+
+Sequences use "lexicographical comparison", which is based on [lexicographical order](https://en.wikipedia.org/wiki/Lexicographical_order)
+
+It's a general form of [alphabetical order](https://en.wikipedia.org/wiki/Alphabetical_order). In alphabetical ordering of words, the order of words is determined by the comparison of their individual letters based on their position in the english _alphabet_. This is the ordering you'll be familiar with if you've ever used an english dictionary. 
+
+For example, `alan` comes before `alba`. The first and second characters are equal but since the third letter a appears in the alphabet earlier than b, `alan` comes first.
+
+Lexicographical comparison follows the same process, just in a more general form. Why general? for one, it doesn't require that we only work with english letters. Maybe it's emojis and the "alphabet" (mathematically known as a totally ordered set) is the unicode codepoint that represents those emojis. Or maybe it's <your own made up type here> and the alphabet is <one you make up>.
+
+Examples:
+
+```python
+>>> 'alan' < 'alba'
+True
+>>> 'alan' < 'alan'
+False
+>>> [1, 2, 3] < [3, 2, 1]
+True
+>>> [99, 2, 3] < [3, 2, 1]
+False
+>>> [1, 2, 3] == [1, 2, 3]
+True
 >>> 
+```
 
-sequences follow what is known as a "lexicographical comparison". understanding the results of comparison requires understanding of what https://en.wikipedia.org/wiki/Lexicographical_order is. 
+### Unordered containers (maps and sets)
 
-in a nutshell, it's a general form of https://en.wikipedia.org/wiki/Alphabetical_order. why general? in alphabetical ordering of words, the order of words is determined by the comparison of their individual letters based on their position in the _alphabet_.
+Unordered collections do not follow lexigographical ordering (since there's no such thing as order for their members).
 
-alan 
-alba 
+#### Maps (dictionary)
 
-alan comes before albino. because the first, second characters are equal but in the third letter a appears in the alphabet earlier than b! this is the ordering you'll be familiar with if you've ever used an english dictionary. 
+The only operations supported by maps are equality. Maps compare equal if and only if they have equal (key, value) pairs.
 
-now, "lexicographical" comparison follows the same idea, just in a more general form. Why general? for one, it doesn't require that we deal with letters only. Maybe it's emojis and the alphabet is the unicode codepoint that represents those emojis. Or maybe it's <your own made up type here> and the alphabet is <one you make up>.
-
-while the type and alphabet associated with that type (mathemtically known as a totally ordered set, informally as an "alphabet") can vary, what's key about lexigographical comparison is the _process_ of comparison which remains the same - which is you determine the ordering between two types by comparing the elements that make up that type, one at a time from left to right - just like ordering words in a dictionary.
-
-with strings, the characters aren't just limited to letters in the alphabet - they can be any unicode character and so the "alphabet" python uses is the unicode code point per character when applying lexigographic ordering.
-
-2. sequences 
-
-Lexicographical comparison between built-in collections works as follows:
-
-1) equality 
-    For two collections to compare equal, they must be of the same type, have the same length, and each pair of corresponding elements must compare equal (for example, [1,2] == (1,2) is false because the type is not the same).
-
-2) less than or equal 
-
-    Collections that support order comparison are ordered the same as their first unequal elements (for example, [1,2,x] <= [1,2,y] has the same value as x <= y). If a corresponding element does not exist, the shorter collection is ordered first (for example, [1,2] < [1,2,3] is true).
-
-NOW, unordered collections do not follow lexigographical ordering (since there's no such thing as order for their members) so you need to know what kind of comparison they support.
-
-3. mappings
-
-Mappings (instances of dict) compare equal if and only if they have equal (key, value) pairs. Equality comparison of the keys and values enforces reflexivity.
-
-Order comparisons (<, >, <=, and >=) raise TypeError.
+All order comparisons (<, >, <=, and >=) raise TypeError.
 
 ```bash
 >>> {1, 2} == {2, 1}
@@ -102,14 +110,17 @@ False
 True
 >>> {'a': 'b'} == {'a': None}
 False
->>> 
+>>> {} < {}
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: '<' not supported between instances of 'dict' and 'dict'
 ```
 
-4. sets
+#### Sets
 
-Sets (instances of set or frozenset) can be compared within and across their types.
+All comparison operators are actually subset and superset tests. `==` compares whether two sets are equal (same members, regardless of ordering because sets have no total ordering). `<` and `>` compares subset and superset, respectively.
 
-They define order comparison operators to mean subset and superset tests. Those relations do not define total orderings (for example, the two sets {1,2} and {2,3} are not equal, nor subsets of one another, nor supersets of one another). Accordingly, sets are not appropriate arguments for functions which depend on total ordering (for example, min(), max(), and sorted() produce undefined results given a list of sets as inputs).
+Examples:
 
 ```bash
 >>> {} == {}
@@ -132,4 +143,30 @@ False
 False
 >>> {1, 2, 3, 5} > {2, 1, 3}
 True
+```
+
+## Logical Operators 
+
+The three logical operators commonly supported in programming languages are: 
+
+```
+AND 
+OR 
+NOT
+```
+
+I've mostly learned those operators as `&&`, `||`, and `!` in other languages. 
+
+In Python, they are `and`, `or`, and `not`, which are syntactically the same as their natural language equivalent! 
+
+```bash 
+>>> True and True
+True
+>>> True or True
+True
+>>> not True
+False
+>>> True and False
+False
+>>> 
 ```

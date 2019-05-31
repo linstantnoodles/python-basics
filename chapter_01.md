@@ -21,3 +21,12 @@ https://stackoverflow.com/questions/7604966/maximum-and-minimum-values-for-ints
 
 Why is the maximum integer one less than the value after the sign for negative integers?
 https://www.cs.cornell.edu/~tomf/notes/cps104/twoscomp.html
+
+### Quiz
+
+What is the difference between precision and scale? 
+
+How do you convert a string number into an integer? 
+
+Which python version has fixed precision? 
+

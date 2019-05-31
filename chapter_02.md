@@ -24,7 +24,7 @@ So given a radix of 2 and a max_exp of 1024, we can calculate the max (with 16 d
 
 A float can be created either with the `float` builtin function which takes either a number or a string or as a literal containing a decimal point such as `5.0`. 
 
-Questions for myself: 
+Research myself: 
 
 * How does division actually work at the machine level? 
 * What is the role of the significand in representing a fractional number? 

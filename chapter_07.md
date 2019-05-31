@@ -12,8 +12,7 @@ They're constructed like so:
 
 Since dictionaries are mutable, keys can hav etheir values reassigned, deleted, etc.
 
-where "key" is the value that gets hashed into a hash table / dictionary.s
-
+where "key" is the value that gets hashed into a hash table / dictionary.
 
 Set "literals" can be constructed using the same curly braces we use to define dictionaries. The difference is that you don't include key/value pairs - just individual elements.
 
