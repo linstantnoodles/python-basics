@@ -149,15 +149,11 @@ True
 
 The three logical operators commonly supported in programming languages are: 
 
-```
-AND 
-OR 
-NOT
-```
+* AND 
+* OR 
+* NOT
 
-I've mostly learned those operators as `&&`, `||`, and `!` in other languages. 
-
-In Python, they are `and`, `or`, and `not`, which are syntactically the same as their natural language equivalent! 
+I've mostly learned those operators as `&&`, `||`, and `!` in other languages. In Python, they are `and`, `or`, and `not`, which are syntactically equal to their natural language counterparts.
 
 ```bash 
 >>> True and True
@@ -170,3 +166,5 @@ False
 False
 >>> 
 ```
+
+Even though I'm very accustomed to reading `&&`, I've grown to prefer pythons more verbose `and`.
