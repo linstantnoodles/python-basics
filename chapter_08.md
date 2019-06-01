@@ -1,5 +1,61 @@
 # Functions
 
+## Subroutines vs Functions
+
+```python
+def greeting():
+    return "hello world"
+```
+
+The word *function* is quite overloaded. Python functions - like most functions in programming languages - are more just [subroutines](https://en.wikipedia.org/wiki/Subroutine) than mathematical functions. 
+
+One definition of a mathematical function from wikipedia is: 
+
+> A function is a process or a relation that associates each element x of a set X, the domain of the function, to a single element y of another set Y (possibly the same set)
+
+In the programming world, many exceptions to this abound in our types of "functions". For example, here's a subroutine definition that accepts an argument `x` and returns a different value each time.
+
+```python
+counter = 0
+def greeting(x):
+    global counter 
+    y = counter + x 
+    counter += 1 
+    return y 
+```
+
+Now lets invoke it multiple times: 
+
+```python
+>>> greeting(0)
+0
+>>> greeting(0)
+1
+>>> greeting(0)
+2
+>>> greeting(0)
+3
+```
+
+The same input `x` maps to multiple outputs `y` so it does not fit the definition of a mathematical function. Furthermore, there's no rules around what set `x` must belong to because python is a dynamically typed language. You can just as easily pass in a string like `greeting('sup')`, in which case an exception might be thrown and nothing is returned at all!
+
+Even if we did have constraints around input, python still doesn't have [pure functions](https://en.wikipedia.org/wiki/Pure_function) because it allows its subroutines to reference global, mutable state.
+
+Nevertheless, the programming world continues to use the word `function` to describe subroutines. I will do the same throughout the course, but keep in mind that when we use the word `function`, what we really mean is *subroutine* or *impure function*.
+
+## Calling functions
+
+Next steps: 
+
+* What are the properties of functions? scope? first class? objects?
+** lambda
+** nested 
+* how do you pass inputs? 
+** how do you unpack arguments?
+* how do you provide outputs? 
+* scope
+
+
 The workhorse of computing. The almighty function. Now that we know how to write expressions using our built-in types, we can group them together and run them over and over by defining them in a function body.
 
 def hello_world(): 

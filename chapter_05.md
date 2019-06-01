@@ -50,7 +50,26 @@ Here's a list of built-in types that share those characteristics and an example 
 
 In python3, abstract classes (https://docs.python.org/3/library/abc.html#module-abc) were introduced and one of them was the `collections.abc.Sequence` abstract class (https://docs.python.org/3/library/stdtypes.html#typesseq). You can create your own sequences by inheriting from this abstract class.
 
-TODO: provide example
+Here's an example using an abstract class to enforce a protcol:
+
+```python
+from abc import ABC, abstractmethod
+
+class MyCar(ABC):
+	@abstractmethod
+	def speed(self):
+		pass 
+
+class MyTesla(MyCar):
+	def speed(self):
+		return 60
+```
+
+If `MyTesla` did not implement a concrete `speed` method, attempting to instantiate it would result in a type error:
+
+```python
+TypeError: Can't instantiate abstract class MyTesla with abstract methods speed
+```
 
 ## Readings 
 
