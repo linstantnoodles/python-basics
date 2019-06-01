@@ -8,13 +8,13 @@ From [python doc](https://docs.python.org/2.0/ref/objects.html)
 
 Python supports the following comparison operators: 
 
-* == (equal)
-* !== (not equal)
-* < (less than)
-* <= (less than or equal)
-* > (greater than)
-* >= (greater than or equal)
-* is (lol)
+* `==` (equal)
+* `!==` (not equal)
+* `<` (less than)
+* `<=` (less than or equal)
+* `>` (greater than)
+* `>=` (greater than or equal)
+* `is` (lol)
 
 First of all, any comparison between anything requires a common unit of measure. Is thix apple less than that orange? Um, maybe. What's the unit? Are we talking about weight? mass? fiber content? 
 
