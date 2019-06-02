@@ -1,6 +1,5 @@
 # Iterators
 
-
 Iterators are super pervasive in python. They're pretty much everywhere.
 
 Lets go over the iterator pattern first and then we'll discuss how python supports iterators.

@@ -1,19 +1,16 @@
 # Functions
 
-## Subroutines vs Functions
+## Subroutines, Functions, Purity
 
-```python
-def greeting():
-    return "hello world"
-```
-
-The word *function* is quite overloaded. Python functions - like most functions in programming languages - are more just [subroutines](https://en.wikipedia.org/wiki/Subroutine) than mathematical functions. 
+While many programming languages (such as python) use the word **function** from mathematics to represent [subroutines](https://en.wikipedia.org/wiki/Subroutine), they often do not share the properties of mathematical functions.
 
 One definition of a mathematical function from wikipedia is: 
 
 > A function is a process or a relation that associates each element x of a set X, the domain of the function, to a single element y of another set Y (possibly the same set)
 
-In the programming world, many exceptions to this abound in our types of "functions". For example, here's a subroutine definition that accepts an argument `x` and returns a different value each time.
+Many exceptions to this abound in python functions. 
+
+For example, here's a function definition that accepts an argument `x` and returns a different value each time.
 
 ```python
 counter = 0
@@ -41,191 +38,170 @@ The same input `x` maps to multiple outputs `y` so it does not fit the definitio
 
 Even if we did have constraints around input, python still doesn't have [pure functions](https://en.wikipedia.org/wiki/Pure_function) because it allows its subroutines to reference global, mutable state.
 
-Nevertheless, the programming world continues to use the word `function` to describe subroutines. I will do the same throughout the course, but keep in mind that when we use the word `function`, what we really mean is *subroutine* or *impure function*.
+Nevertheless, the programming world continues to use the word `function` to describe subroutines. Even though the word implies properties that subroutines do not have, I will use the word because that's in the official python spec. However, keep in mind that when we use the word `function`, what we really mean is *subroutine* or *impure function*.
 
-## Calling functions
+## First class citizens
 
-Next steps: 
+Python functions are [first class](). They're objects that can be passed around as arguments just like any other object.
 
-* What are the properties of functions? scope? first class? objects?
-** lambda
-** nested 
-* how do you pass inputs? 
-** how do you unpack arguments?
-* how do you provide outputs? 
-* scope
+```python
+def do_map(fn, elements):
+    result = []
+    for i in elements:
+        result.append(fn(i))
+    return result
 
+def square(x):
+    return x * x
+```
 
-The workhorse of computing. The almighty function. Now that we know how to write expressions using our built-in types, we can group them together and run them over and over by defining them in a function body.
+Now lets invoke `do_map` by passing in `square`: 
 
-def hello_world(): 
-	return "hello world"
+```bash
+>>> do_map(square, [2, 4])
+[4, 16]
+```
 
-an introduction to functions introduces a couple of new concepts: 
+## Types of functions
 
-1) indentation
-2) scopes
+There's two types of function you can create in python: compound functions and anonymous functions (lambdas). 
 
-## How to invoke functions
+### Compound functions
 
-## Arguments
+Compound functions are the most common. Here's an example of one: 
 
-def fn(): 
-    pass
-
-assert fn() == None
-
-def fn():
-    return
-
-assert fn() == None
-
-def fn():
-    return True
-
-assert fn() == True
-
-def fn(a):
-    return a
-
-assert fn(5) == 5
-
-def fn(a, b):
+```python
+def greeting():
+    a = 'hello '
+    b = 'world'
     return a + b
+```
 
-assert fn(1, 2) == 3
+The bodies of compound functions can contain any number or types of expressions or statements. Including other function definitions.
 
-def fn(a, b):
-    return a if b else "Whatsup"
+```python
+def parent():
+    def child():
+        print("im the child")
+    child()
+    print("im the parent")
+```
 
-assert fn(1, True) == 1
-assert fn(1, False) == "Whatsup"
+As you can see, a function doesn't necessarily need to return a value. However, it _does_ need to have something in the body. If you absolutely need a placeholder for the actual implementation (a common need for some TDD practitioners), just use the keyword `pass`. This will make the function to return `None`.
 
-def fn(a=False):
-    return a
+### Anonymous functions (lambdas)
 
-assert fn(5) == 5
-assert fn(a=5) == 5
-assert fn() == False
+These are less common, but very useful in situations where you want a single-use function. 
 
-def fn(*args):
-    return args 
+For example: 
 
-assert fn(1, 2, 3) == (1, 2, 3)
+```bash
+>>> do_map(lambda x: x * x, [2, 4])
+[4, 16]
+```
 
-def fn(a, *args):
-    return (a, args)
+You're allowed to bind lambda functions to names as well.
 
-assert fn(1, 2, 3, 4) == (1, (2, 3, 4))
+```bash
+>>> square_function = lambda x: x * x
+>>> do_map(square_function, [2, 4])
+[4, 16]
+```
 
-def fn(*args, b=None):
-    return b 
+Unlike compound functions, you're only allowed to have a single expression in the body of a lambda, and statements (such as assignment statements or control flow statements) are not permitted. 
 
-assert fn(1, 2, 3, b=5) == 5
+```bash
+>>> lambda x: a = x
+  File "<stdin>", line 1
+SyntaxError: can't assign to lambda
+```
 
-def fn(**kwargs):
-    return kwargs
+### Parameters
 
-assert fn(a=4, b=5) == {"a": 4, "b": 5}
+Compound functions support both positional parameters and named parameters. Lambda functions only support positional parameters.
 
-def fn(a, **kwargs):
-    return a + kwargs['b']
+#### Compound function parameters
 
-assert fn(5, b=12) == 17
+**Positional** 
 
-def fn(x, *args, **kwargs):
-    return kwargs
+```bash
+>>> def foo(a):
+...     print(a)
+... 
+>>> foo(1)
+1
+>>> def foo_two(a, b):
+...     print(a)
+...     print(b)
+... 
+>>> foo_two(1, 2)
+1
+2
+>>> 
+```
 
-assert fn(1, 2, 3, a=4, b=5) == {"a": 4, "b": 5}
+**Named** 
 
-def fn(a):
-    b = 12
-    def nested_fn():
-        return a + b
-    return nested_fn()
+```bash
+>>> def foo(a=None):
+...     print(a)
+... 
+>>> foo(1)
+1
+>>> foo()
+None
+>>> def foo_two(a=None, b=2):
+...     print(a)
+...     print(b)
+... 
+>>> foo_two(1, 3)
+1
+3
+>>> foo_two()
+None
+2
+```
 
-assert fn(1) == 13
+**Both** 
 
-def fn(a):
-    b = 12
-    def nested_fn(a):
-        return a + b
-    return nested_fn(12)
+```bash
+>>> def foo(a, b, c=1, d=2):
+...     print(a)
+...     print(b)
+...     print(c)
+...     print(d)
+... 
+>>> foo('hello', 'world')
+hello
+world
+1
+2
+>>> foo('hello', 'world', c=5, d=7)
+hello
+world
+5
+7
+>>> 
+```
 
-assert fn(1) == 24
+**Parameter unpacking**
 
-def fn():
-    pass
+Unpacking positional arguments: 
 
+```bash
+>>> def foo(*args):
+...     print(args)
+... 
+>>> foo(1, 2, 3, 4)
+(1, 2, 3, 4)
+```
 
-# advanced
+Unpacking keyword arguments:
 
-# this is valid 
-class Fun:
-    pass
-def a(b: Fun) -> True: 
-    return 5
-
-# introduced in https://www.python.org/dev/peps/pep-3107/#id28
-
-# Do they do anything? No - only made for reading: 
-
-# > By itself, Python does not attach any particular meaning or significance to annotations. Left to its own, Python simply makes these expressions available as described in Accessing Function Annotations below.
-
-
-# >>> a.__annotations__
-# {'return': True}
-
-
-# this is also new: tfpdef: NAME [':' test]
-
-def a(b: "wow" = not True):
-    return b
-
-
-def a(b: "wow" = lambda x: x**2):
-    return b
-
-# nested functions
-
-# Next, lets move into the nature of function bodies. 
-
-
-# No compound statements allowed i.e: if: or other function definitions
-def fn(): return 5
-def fn(): a = 5; return a
-
-def fn():
-    a = 5
-    return a
-
-def fn():
-    a = 5; b = a; c = 12
-    k = (10 + 10)
-    return a + b + c
-
-def fn(x): a = 5; return "sup" if x > 5 else "nope"
-
-# Can we self-invoke? No. At least not with function definition statements. Lambda definitions are fine though. 
-
-
-(True)
-(5 + 5 + 5)
-(10 < 12)
-(lambda x: x**2)(100)
-
-# can you nest functions? Sure! Function bodies are considered compound statements, that can also contain statements which can be anything.
-
-# Can lambdas have returns? No. They only take basic test expressions ... But they can invoke other lambdas!
-
-(lambda x: (lambda y: y * 2)(x))(5)
-
-# lets discuss return values!
-
-def a():
-    return 1, 2, 3
-
-
-# lets talk about closures
-# lets talk about nested function scopes 
-# 
+```bash
+>>> def foo(**kwargs):
+...     print(kwargs)
+... 
+>>> foo(a=5, b=12)
+{'a': 5, 'b': 12}
+```
