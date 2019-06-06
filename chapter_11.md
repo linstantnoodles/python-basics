@@ -72,7 +72,7 @@ Here's the exact order:
 3. Global (module) namespace
 4. Built-in namespace
 
-So when you have two name-bindings with the same name in different namespaces, the nearest one will be used. In other words, the name-binding in the nearest namespace shadows the other one. 
+This order is sometimes referred to as the "LEGB" rule. This lookup rule means that given two name-bindings with the same name in different namespaces, the nearest one will be used. In other words, the name-binding in the nearest namespace shadows the other one. 
 
 Here's a walk through of name resolution in action:
 

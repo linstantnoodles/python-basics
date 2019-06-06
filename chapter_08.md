@@ -42,7 +42,7 @@ Nevertheless, the programming world continues to use the word `function` to desc
 
 ## First class citizens
 
-Python functions are [first class](). They're objects that can be passed around as arguments just like any other object.
+Python functions are [first class](https://en.wikipedia.org/wiki/First-class_function). They're objects that can be passed around as arguments just like any other object.
 
 ```python
 def do_map(fn, elements):
@@ -186,6 +186,8 @@ world
 
 **Parameter unpacking**
 
+This is useful when you need to pass in a variable number of either positional arguments or keyword arguments. Prior to python 3.7 the [limit to the number of arguments](https://stackoverflow.com/questions/714475/what-is-a-maximum-number-of-arguments-in-a-python-function) was 255. 
+
 Unpacking positional arguments: 
 
 ```bash
@@ -204,4 +206,29 @@ Unpacking keyword arguments:
 ... 
 >>> foo(a=5, b=12)
 {'a': 5, 'b': 12}
+```
+
+Unpacking both positional and keyword arguments: 
+
+```bash
+>>> def foo(*args, **kwargs):
+...     print(args)
+...     print(kwargs)
+... 
+>>> foo(1, 2, 3, a=4, b=5)
+(1, 2, 3)
+{'a': 4, 'b': 5}
+>>> 
+```
+
+**Parameter ordering**
+
+The only order requirements for paramters is that positional parameters must come before keyword parameters. This is what will happen if you attempt to define name arguments before positional ones: 
+
+```python
+>>> def foo(name=5, c):
+...     print(name) 
+... 
+  File "<stdin>", line 1
+SyntaxError: non-default argument follows default argument
 ```
