@@ -29,9 +29,9 @@ outline:
 			- sets, maps
 
 after built-in data types
-- functions
-- classes 
-- modules
+- functions (done)
+- classes (done)
+- modules (done)
 
 * iterators 
 * generators

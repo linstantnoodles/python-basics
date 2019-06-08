@@ -1,6 +1,6 @@
 # Classes 
 
-Python lets you construct your own custom objects as well. 
+Python lets you construct your own custom objects as well using classes.
 
 
 ```python
@@ -12,62 +12,137 @@ Python lets you construct your own custom objects as well.
 			print("Running")
 ```
 
-All variables and functions defined in the body of the class have class-level scope. This means Export.schedule and Export.run will return values. Those values are not defined outside of the class.
+Classes are objects. There are two things you can do with class objects. 
 
-Both of those are known as attribute references. Any object with a dot followed by a name is an attribute reference.
+The first is that you can define attributes on the class. These attributes are name-bindings local to the class that you can access via dot syntax. For example, the class object above has three attributes: `schedule`, `__init__`, and `run`.
 
-Python has no concept of privates so you can also assign to existing attributes or create entirely new ones.
+If I access them via dot syntax in the interpreter, I get: 
 
-Export.schedule = "Wednesday"
-Export.duration = "5 hours"
+```bash
+>>> Export.schedule
+'Tuesday'
+>>> Export.__init__
+<function Export.__init__ at 0x7fbf7876f7b8>
+>>> Export.run
+<function Export.run at 0x7fbf739c1f28>
+```
 
-* defining a class
-* namespace / scope
-* instances 
-* self 
-* inheritance 
-* decorators 
+The second thing is that you can invoke them the same way you invoke functions in python. 
 
-Great tutorial: https://docs.python.org/2/tutorial/classes.html
-
-https://docs.python.org/2/tutorial/classes.html#class-and-instance-variables
-
-Variables defined at the class level 
-
-when the constructor is called and a class is created 
-I love instantiation of classes in python - it uses function invocation syntax (name followed by parenthesis). So there's two operations: either an attribute reference of using the name as invocation to create an instance (instantiation)
-
-By default 
-
->>> class Empty():
-...     pass
-... 
->>> Empty()
-<__main__.Empty object at 0x7efcbbe4f7b8>
+```
+>>> export = Export() 
+>>> export
+<__main__.Export object at 0x7fbf76afb7b8>
 >>> 
+```
 
-Now if you want the empty object initialized with some data, you can define a method called __init__. 
-Whe npython sees this init method, it will invoke it after creating the empty object by passing it as the first argument to __init__. 
+Invoking a class object creates an **instance** of the class. An instance is an object of a specific class type. When dealing with most built-in types, you're usually specifying instance objects rather than class objects. 
 
-This behavior of passing the initialized object to a method is how methods operate on data in an instance. in other languages, there is no explicit reference to the object in the code as the language takes care of making sure operations you make within methods are done on the instance object. In python you need to explicitly use self if you want to define things on the instance specifically.
+For example, lets take a list type for example:
+
+```bash
+>>> my_list = [1, 2, 3]
+>>> type(my_list)
+<class 'list'>
+```
+
+Since every instance object has a reference to its class object via the attribute `__class__`, you _can_ access the class object if you need to. For built-in types though, that's not a common need.
 
 
-Example in ruby: 
+## What do instance objects have when first created? 
 
+Nothing. All instance objects are created empty. Now, you may see this: 
+
+```bash
+>>> class Foo():
+...     a = 'hello'
+... 
+>>> foo_one = Foo()
+>>> foo_two = Foo()
+>>> foo_one.a
+'hello'
+>>> foo_two.a
+'hello'
+```
+
+Since we can access the variable `a` defined in the class `Foo`, does that mean attributes are being copied onto the instance object? No.
+
+Class attributes are shared with instances and accessed from **lookups** on the class object. To prove this, lets change `a` directly on the `Foo` class object and see what happens:
+
+```bash
+>>> Foo.a = 'good bye'
+>>> foo_one.a
+'good bye'
+>>> foo_two.a
+'good bye'
+```
+
+If attributes were being copied onto the instance objects, we should still see `hello` printed.
+
+## Setting instance attributes
+
+Now there is a way to initialize attributes on the instance object, which is through a function you define in the class object called `__init__`. If python sees this function during the instantiation process, it will invoke it with one argument: the empty instance object.
+
+```bash
+>>> class Foo():
+...     def __init__(self):
+...             print(self)
+... 
+>>> Foo()
+<__main__.Foo object at 0x7fbf739bcda0>
+<__main__.Foo object at 0x7fbf739bcda0>
+```
+
+The first printed result is from the return value of the invocation. The second one is from our print statement. They both refer to the instance object. Now, the parameter `self` is a convention - it's a positional argument that can take on any name. By the convention is to use the name `self` to refer to the instance object that's passed in.
+
+Since this function has a reference to the instance object, it can define anything it wants on it!
+
+```bash
+>>> class Foo():
+...     def __init__(self):
+...             self.greet = 'hello'
+... 
+>>> foo = Foo()
+>>> foo.greet
+'hello'
+>>> Foo.greet
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: type object 'Foo' has no attribute 'greet'
+```
+
+As you see above, the attributes you define directly on the object itself is specific to that instance and does not exist on the class object.
+
+In fact, _any_ function (unless they're decorated ... which we'll cover later) you define on the class level will be passed the instance object when invoked by an instance object.
+
+```bash
+>>> class Foo():
+...     def __init__(self):
+...             self.greet = 'hey'
+...     def leave(self):
+...             self.greet = 'bye'
+... 
+>>> foo = Foo()
+>>> foo.greet
+'hey'
+>>> foo.leave()
+>>> foo.greet
+'bye'
+>>> 
+```
+
+This way of interacting with the instance object through a function parameter is more explicit compared to other languages such as ruby where the language hides the reference to the instance object. 
+
+For example, here's how you define an instance variable in a function in ruby:
+
+```ruby
 class A
 	def foo()
 		@instance = 'hey'
 	end  
 end 
+```
 
-By prefixing identifiers with a symbol, we tell ruby that this needs to be defined on the instance. 
+There's no explicit reference to an instance object - all you need to do is prefix names with `@` and ruby will set it on the instance for you.
 
-What does it mean t obe defined "on"? Are objects just maps? Yes and no. They are just a set of name binding pairs, but the different is that objects bridge the connection of those name binding pairs to the object itself. 
-
-when you define an attribute on the class, you can access it thru the instnace.
-when you define a method, the instance is passed to the method to be operated on / used / read from.
-whe nyou define a special method init, the nstance is constructed with some initial data.
-what's more, you can also "inherit" other names from other classes 
-
-so sure, you can just make a dictionary with this attributes and it's probably sufficent if you're only dealin gwith data. But if you want the functions on that dictionary to operate on a shared object, you're basically trying to invent classes. 
-
+If you're used to implicitly setting instance attributes, then this python way might be a bit weird at first for you!
