@@ -39,3 +39,13 @@ In most cases, you'll never have to call next yourself because the python `for` 
 2
 3
 ```
+
+## Whats the difference between an iterable and an interator? 
+
+    Iterables have a __iter__ method that instantiates a new iterator every time.
+
+    Iterators implement a __next__ method that returns individual items, and a __iter__ method that returns self .
+
+    Therefore, iterators are also iterable, but iterables are not iterators.
+
+Luciano Ramalho, author of `Fluent Python`.
