@@ -1,11 +1,11 @@
 # Python crash course for programmers
 
-The ideal student for this course: 
+The ideal student for this course:
 
 * Has written programs in python or different languages before. Understands basic programming concepts like variables and loops as well as object oriented programming concepts like encapsulation and inheritance.
-* Wants to master the fundamentals of the language and be more productive (most important). 
+* Wants to master the fundamentals of the language and be more productive (most important).
 
-My goals as a course creator: 
+My goals as a course creator:
 
 * Cover the essential concepts in plain english.
 * Give examples. An example is worth a thousand words.
@@ -15,8 +15,8 @@ Note: Alot of the world still use python 2.7. The material will be in python 3 b
 
 ## Curriculum outline
 
-* data types and common operations 
-	- numberic 
+* data types and common operations
+	- numberic
 	- containers
 		- ordered (sequences)
 			- string, list, tuple
@@ -25,14 +25,15 @@ Note: Alot of the world still use python 2.7. The material will be in python 3 b
 * functions (done)
 * classes (done)
 * modules
-* iterators 
+* comprehensions (done)
+* iterators
 * generators
-* file I/O 
-* namespaces 
-* strings 
-* style 
-* PEP 
-* looking stuff up / self-learning 
+* file I/O
+* namespaces
+* strings
+* style
+* PEP
+* looking stuff up / self-learning
 * project ideas / exercises
 
 
