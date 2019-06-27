@@ -4,7 +4,7 @@ From [wikipedia](https://en.wikipedia.org/wiki/Scope_(computer_science)):
 
 > In computer programming, the scope of a name binding – an association of a name to an entity, such as a variable – is the region of a computer program where the binding is valid: where the name can be used to refer to the entity.
 
-I like this definition because it's clear and concise. However, it's an abstract, language-agnostic definition that tells us little as to what this means in the context of a real programming language. I'm going to try to ground our understanding of `scope` by defining it within the world of python.
+I like this definition because it's clear and concise. However, it's an abstract, language-agnostic definition that tells us little as to what this means in the context of a real programming language. I'm going to try to ground our understanding of `scope` with examples in python.
 
 In python, there are many ways to create name bindings.
 
