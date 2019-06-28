@@ -117,3 +117,102 @@ So if we rewrote our statement to be a for loop, we'll see all numbers printed w
 ```
 
 In practice, it's sometimes hard to tell whether we're iterating through a container or a generator function unless you have the full context of the code. And I think that's great because as a client of a generator object, I really do not need to know whether it's a container or generator. The same benefits of abstraction of the iterator pattern extends to these generator objects and that's a good thing.
+
+## Why use them? 
+
+Generators are great for returning elements _lazily_. Lets consider a function that returns a number of fibonacci numbers. Lets say we have a client that wants to perform some type of transformation on fibnacci numbers (square them)
+
+
+```python
+def fib(count):
+    results = []
+    a, b = 0, 1
+    for n in range(0, count):
+        if n == 0: 
+            results.append(a)
+        elif n == 1:
+            results.append(b)
+        else:
+            a, b = b, a + b 
+            results.append(b)
+    return results
+```
+
+>>> def fib(count):
+...     results = []
+...     a, b = 0, 1
+...     for n in range(0, count):
+...         if n == 0: 
+...             results.append(a)
+...         elif n == 1:
+...             results.append(b)
+...         else:
+...             a, b = b, a + b 
+...             results.append(b)
+...     return results
+... 
+>>> 
+>>> fib(10)
+[0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+>>> 
+
+
+So this function generates each fib, adds it to a list and returns. This looks good. But what if we have too many numbers to hold in memory? Or if we're not just dealing with a large list of numbers but custom objects that have much higher memory footprints? 
+
+One approach without generators is to simply perform the operation as the numbers become available. This often involves putting the operation in the inner loop of whatever is generating the elements. For example 
+
+for n in range(0, count):
+	if n == 0:
+		square(a)
+	elif n == 1:
+		square(b)
+	else: 
+		a, b = b, a + b 
+		square(b)
+
+
+While this may be fine for cases where the client only needs to operate based on that one input, things get messy when the operation needs to track state (free variables) from outside the function. perhaps it also wants to keep a running count or a list of what it's seen. 
+
+def square(x):
+	counter += 1
+	return x * x
+
+what you have then is an op passed into the producer that operates on some data in an outside context. this isn't wrong per se, but it's awkward and makes code hard to understand because we're forced to include all the state management in our callback that's passed to fib.
+
+```python
+def fib(count):
+    a, b = 0, 1
+    for n in range(0, count):
+        if n == 0: 
+            yield a
+        elif n == 1:
+            yield b 
+        else:
+            a, b = b, a + b 
+            yield b
+```
+
+>>> def fib(count):
+...     a, b = 0, 1
+...     for n in range(0, count):
+...         if n == 0: 
+...             yield a
+...         elif n == 1:
+...             yield b 
+...         else:
+...             a, b = b, a + b 
+...             yield b
+... 
+>>> fib(10)
+<generator object fib at 0x7f4bd34e8eb8>
+>>> results = fib(10)
+>>> list(results)
+[0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+>>> 
+
+the call to list actually does the iteration for us and returns a list. of course this ends up taking same amount of memory as other one but this is mostly just to show you that the contents are same. you can trust me that the actual elements were retrieved lazily (meaning fib did not generate all of them upfront)
+
+contrast this with this approach. 
+
+not only do we get the benefits of just dealing with one element at a time, we don't need to pass in some function itno the producer and add more complexity to that level. we can deal with it in the outside context and performs w.e state changes we need.
+            

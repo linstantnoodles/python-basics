@@ -71,6 +71,49 @@ If `MyTesla` did not implement a concrete `speed` method, attempting to instanti
 TypeError: Can't instantiate abstract class MyTesla with abstract methods speed
 ```
 
+## Operations 
+
+* slicing 
+* adding 
+* subtracting 
+* removing 
+
+Lets separate mutable operations from immutable ones. 
+
+elements = ['a', 'b', 'c', 'd', 'e']
+
+read operations
+elements[0] to get the first element. simple index based access.
+
+if you have a value but not the index (search), you can search by 
+
+elements.index('b')
+
+
+next, lets get to transformations:
+
+getting a subset of the array
+
+if it's by some range: 
+
+elements[0:5] for elements [0, 5)
+elements[:-2] for last 2 elements 
+
+
+totally immutable. above. you get a new list back. 
+
+now. if you want to mutate existing: 
+
+elements.insert 
+elements.remove
+
+so we have two optios - either take away elements from the existing list or add 
+of course, we can also replace an existing element by setting via index: 
+
+elements[5] = 'something else '
+
+since all container types are by definitions index addressable, they all support this same interface (confirm)
+
 ## Readings 
 
 https://treyhunner.com/2018/02/python-range-is-not-an-iterator/
