@@ -120,11 +120,10 @@ According to the manual:
 
 "Packages" are also modules, with the exception that they mainly serve as a namespacing mechanism and do not need to point o an actual source file.
 
-First, lets start with child directories aka packages that live in the same dir as your main. you can just import using dot notation.
-
 `from .subchild import fork`
 
-
+1. This is done by a module in a package. What a package is varies in python 2 and 3.
+2. The package it's referring to CANNOT be the __main__ module
 
 ## Without dots
 
@@ -132,78 +131,4 @@ If you're using `from X` without dots, then X needs to be in same directory as t
 
 Note: the __main__ module is the entry point of the program.
 
-## With dots
-
-1. This is done by a module in a package. What a package is varies in python 2 and 3.
-2. The package it's referring to CANNOT be the __main__ module.
-
-# Notes for myself
-
 Relative imports seems really attractive alternative to not having to update sys.path at runtime for child packages. On the other hand, I also like being able to rely mostly on one style of importing throughout a project.
-
-Ok. so cool. now we know how to import things from a current directory or from a module that lives in the same dir as the main file. but we seldom have all of our source files in just one directory.
-
-what if our module lives in a different dir?
-	what if it lives in an ancestor dir?
-	what if it lives in a child dir?
-
-So the way python lets you put ur stupid modules into other places (directories) and still use them is through "packages". these are also modules, just more special b.c they are not actual files. they let use basically namespace modules with same names into multiple contexts.
-
-First, lets start with child directories aka packages that live in the same dir as your main. you can just import using dot notation.
-
-i.e
-
-/main.py
-/child
-	/spoon.py
-
-well main can do "import child.spoon". same result.
-
-Now, how do the stuff you're importing know how to import their own shit?
-
-/main.py
-/child
-	/spoon.py
-	/subchild
-		/fork.py
-
-You might guess: well maybe the same rule applies there!
-
-Actualy nope. so note that sys path will not drill into child directories FOR you. while the package could be found (and thus the child can also be found for spoon.py), that doesn't include the subchild.
-
-Now if the act of importing spoon causes /child to be added to the sys.path, then doing "import subchild.fork" in spoon.py would work.
-
-HOW THE FUCK DO WE GET AROUND THIS?
-
-Option a: we can modify sys.path or get into the hooks. this is annoying because imagine having to do this for a complex tree... you need to specify ALL the paths upfront. yikes.
-
-Option b: use relative imports. oh shit did u know this existed.
-
-So option B gets us into the topic of RELATIVE imports. so we're not just using sys.path which is set in stone (unless modified) based on location of main. we can import shit RELATIVE to where the current module doing the importing IS (which is crucial for nested modules).
-
-This works:
-
-from .subchild import fork
-
-Notice the fucking dot in front? The manual says it best honestly:
-
- One leading dot means the current package where the module making the import exists.
- Two dots means up one package level.
- Three dots is up two levels, etc.
-
-Notice we have NO mention if sys.path. Not in there? doesn't fucking matter. that's why FROM is so dope.
-
-OKAY. now what does this mean for PARENT imports? That's easy to answer now.
-
-First, are you doing an absolute import? If so, sys.path is king. So if your child module is importing a parent, is that parent in sys.path? That's the question.
-
-If you're NOT doing an absolute import, then are you during the right dots?
-
-Ok so I just tried a dot and got this bullshit:
-
-ValueError: attempted relative import beyond top-level package
-
-So this happens if you try to do .. but .. refers to the very top level directory.
-Even if you go ... - if you're trying to refer to a module in the top level, it will NOT work because dots need to be followed by a PACKAGE that lives in the top level.
-
-Not to mention that: HEY, you do not fucking need absolutes because if it's at the top level, then you probably already have access to it via sys.path so just use an absolute import.
