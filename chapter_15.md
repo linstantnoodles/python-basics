@@ -30,7 +30,7 @@ The first performs an absolute import. By absolute, we mean the location of the 
 The second performs a relative import. That means the location of the program *does* matter. A program located in X using the relative import syntax will *not* have access to the same set of files as a program located in Y using the relative import syntax.
 
 ### Absolute imports (import X)
-
+.
 With absolute imports, the thing that stays the same for all files doing an absolute import is what set of files they have access to. So the most important thing to understand is how the import machinery in python _determines_ what that set is.
 
 That process looks a bit like this:
@@ -67,7 +67,7 @@ This will place `/usr/whattheshit` in front of the current directory value `''`.
 
 Here's an example output using both inline execution and setting `PYTHONPATH`.
 
-```bash
+```bash.
 PYTHONPATH='/usr/whattheshit' python -c 'import sys; print(sys.path)'
 
 ['', '/usr/whattheshit', '/usr/lib/python2.7', '/usr/lib/python2.7/plat-x86_64-linux-gnu', '/usr/lib/python2.7/lib-tk', '/usr/lib/python2.7/lib-old', '/usr/lib/python2.7/lib-dynload', '/usr/local/lib/python2.7/dist-packages', '/usr/lib/python2.7/dist-packages', '/usr/lib/python2.7/dist-packages/gtk-2.0']
@@ -94,13 +94,16 @@ Here's a sample list on my linux machine:
 ]
 ```
 
-I rarely ever have to pay any attention to these paths. All you really have to know is that they're there.
+I rarely ever have to pay any attention to these system paths. All you really have to know is that they're there.
 
 All together, the default list is made up of `<CURRENT DIR OR DIR OF FILE> <PYTHON_PATH> <SYSTEM PATHS>`. Once `sys.path` is constructed based on the rules above, it remains the same throughout the lifetime of the program if unmodified.
 
 ## Did you just say ... unmodified?
 
 Well that makes it sound like it can be modified (spoiler: it can). Updating `sys.path` in a program before importing is a common technique for getting access to what you need.
+
+
+TODO: example here            hy
 
 ## Relative imports (from X import Y)
 
@@ -118,12 +121,94 @@ According to the manual:
  Two dots means up one package level.
  Three dots is up two levels, etc.
 
-"Packages" are also modules, with the exception that they mainly serve as a namespacing mechanism and do not need to point o an actual source file.
+"Packages" are also modules, with the exception that they mainly serve as a namespacing mechanism and do not need to point to an actual source file.
+
+In python2, a directory is only a module if it contains an `__init__.py` file. In python 3, this file is optional.
+
+Example: 
+
+app/
+	main.py
+	volcanos/
+		maunaloa.py
+
+main.py 
+```
+from volcanos.maunaloa import location
+
+print("You are in main.py")
+print("The location of maunaloa is {}".format(location))
+```
+
+alin@alin-x1:~/code/python-import-testing$ python3 app/main.py 
+this is mauna loa.py
+You are in main.py
+The location of maunaloa is Hawaii
+
+
+
+alin@alin-x1:~/code/python-import-testing$ python app/main.py 
+Traceback (most recent call last):
+  File "app/main.py", line 1, in <module>
+    from volcanos.maunaloa import location
+ImportError: No module named volcanos.maunaloa
+
+Now lets add an init.py
+
+alin@alin-x1:~/code/python-import-testing$ touch app/volcanos/__init__.py
+alin@alin-x1:~/code/python-import-testing$ python app/main.py
+this is mauna loa.py
+You are in main.py
+The location of maunaloa is Hawaii
+alin@alin-x1:~/code/python-import-testing$ 
+
+<python 2 vs python 3> 
 
 `from .subchild import fork`
 
 1. This is done by a module in a package. What a package is varies in python 2 and 3.
 2. The package it's referring to CANNOT be the __main__ module
+
+The main module is the entry point file. Basically, the one you're executing. Here's what happens when you add a leading dot: 
+
+from .volcanos.maunaloa import location
+
+python3 main.py 
+Traceback (most recent call last):
+  File "main.py", line 1, in <module>
+    from .volcanos.maunaloa import location
+ModuleNotFoundError: No module named '__main__.volcanos'; '__main__' is not a package
+
+But given this folder structure
+
+
+app/
+	main.py
+	volcanos/
+		maunaloa.py
+		maunakea.py
+
+
+from volcanos.maunaloa import location
+print("You are in main.py")
+print("The location of maunaloa is {}".format(location))
+
+from .maunakea import height
+print("this is mauna loa.py")
+location = 'Hawaii'
+print("Mauna loa is located in {}. It's next to mauna kea which has a height of {} feet".format(location, height))
+
+
+print("this is maunakea.py")
+height = 33000
+
+
+alin@alin-x1:~/code/python-import-testing/app$ python3 main.py
+this is maunakea.py
+this is mauna loa.py
+Mauna loa is located in Hawaii. It's next to mauna kea which has a height of 33000 feet
+You are in main.py
+The location of maunaloa is Hawaii
 
 ## Without dots
 

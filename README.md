@@ -15,7 +15,7 @@ Note: Alot of the world still use python 2.7. The material will be in python 3 b
 
 ## Curriculum outline
 
-* data types and common operations
+* data types and common operations (done)
 	- numberic
 	- containers
 		- ordered (sequences)
@@ -24,16 +24,16 @@ Note: Alot of the world still use python 2.7. The material will be in python 3 b
 			- sets, maps
 * functions (done)
 * classes (done)
-* modules
+* modules / imports (TBD)
 * comprehensions (done)
-* iterators
-* generators
+* iterators (done)
+* generators (done)
 * file I/O
-* namespaces
-* strings
-* style
-* PEP
+* namespaces (done)
+* Exceptions
+* PEP / Style / Idioms
 * looking stuff up / self-learning
 * project ideas / exercises
+** have them for each cahpter. then also have a few "project" exercises like write slot machine game or write tic tac toe or write a chess game.
 
 
