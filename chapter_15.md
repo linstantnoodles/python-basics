@@ -29,13 +29,13 @@ The first performs an absolute import. By absolute, we mean the location of the 
 
 The second performs a relative import. That means the location of the program *does* matter. A program located in X using the relative import syntax will *not* have access to the same set of files as a program located in Y using the relative import syntax.
 
-### Absolute imports (import X)
+### Absolute imports (import X or from X import Y where X does not contain dots)
 .
 With absolute imports, the thing that stays the same for all files doing an absolute import is what set of files they have access to. So the most important thing to understand is how the import machinery in python _determines_ what that set is.
 
 That process looks a bit like this:
 
-1. Did we already import this (Is it in our module cache?) If so, do nothing! You already have it. If not, move on to the second check.
+1. Did we already import this (Is it in our module cache?) If so, do nothing! You already have it. If not, move on to the second check. sys.modules.
 2. Is it a built-in module? If so, you can totally have it! If not ....
 3. Is it located in any of the directories under `sys.path`? If so, you can have it! If not, sorry - we cannot import your file (python will raise an ImportError at this point)
 
@@ -105,7 +105,7 @@ Well that makes it sound like it can be modified (spoiler: it can). Updating `sy
 
 TODO: example here            hy
 
-## Relative imports (from X import Y)
+## Relative imports (from X import Y where X contains does )
 
 X will represent the import source. It either contain leading dots or no dots.
 
@@ -208,7 +208,7 @@ this is maunakea.py
 this is mauna loa.py
 Mauna loa is located in Hawaii. It's next to mauna kea which has a height of 33000 feet
 You are in main.py
-The location of maunaloa is Hawaii
+The location of maunaloa is Hawaii 		
 
 ## Without dots
 
@@ -217,3 +217,84 @@ If you're using `from X` without dots, then X needs to be in same directory as t
 Note: the __main__ module is the entry point of the program.
 
 Relative imports seems really attractive alternative to not having to update sys.path at runtime for child packages. On the other hand, I also like being able to rely mostly on one style of importing throughout a project.
+
+## Running files as scripts 
+
+sometimes we want code in a file to execute only if it's being used a script but not executed on import. there's a common conditonal that's used to apply script behavior to a python module. 
+
+if __name__ == '__main__':
+	print("do script things")
+	https://stackoverflow.com/questions/419163/what-does-if-name-main-do
+
+
+so when python creates a module it also sets a few built in secret variables. one of them is __name__ which is just the name of the module. lets see what this prints in our files 
+
+
+this is maunakea.py
+Module name: volcanos.maunakea
+this is mauna loa.py
+Mauna loa is located in Hawaii. It's next to mauna kea which has a height of 33000 feet
+Module name: volcanos.maunaloa
+You are in main.py
+The location of maunaloa is Hawaii
+Module name: __main__
+
+as you can see by adding a print of the names to our files, you'll see that the module in the packages contain the full path. the entry point is always __main__. python users use this to their advantage in modules to execute code when the file is being run directly by python interpreter (as main).
+
+## Common gotchas 
+
+ValueError: attempted relative import beyond top-level package
+
+https://docs.python.org/3.5/c-api/unicode.html#c.PyUnicode_FindChar
+
+last_dot = PyUnicode_FindChar(package, '.', 0, last_dot, -1);
+
+`package` is the name of the package. So lets say `volcanos.manuakea`. so if we look up, we will find index to be positive (8). if it's positive, then 
+
+https://github.com/python/cpython/blob/762f93ff2efd6b7ef0177cad57939c0ab2002eac/Python/import.c#L1682
+
+base = PyUnicode_Substring(package, 0, last_dot);
+
+it gets the name of that base parent. 
+
+if it can't find a dot, you'll get an error. the only way you can't find a dot is if the package name contains no dot. and the only package without a dot is the top level package. 
+
+
+lets say we're in a module with name volcano.maunaloa 
+from ..kiluea import height
+
+One leading dot means the current package where the module making the import exists
+
+current package where the module (volcano.maunaloa) exists is volcano! so that's a top level package. there are no more dots after that. 
+
+there WOULD be if the directory containing our main.py was considered a package (but it isn't).
+
+i.e app.volcano
+
+
+
+
+
+
+ModuleNotFoundError: No module named '__main__.volcanos'; '__main__' is not a package
+
+
+
+
+
+
+https://docs.python.org/3/reference/import.html#package-relative-imports
+
+
+Absolute imports may use either the import <> or from <> import <> syntax, but relative imports may only use the second form; the reason for this is that:
+
+import XXX.YYY.ZZZ
+
+should expose XXX.YYY.ZZZ as a usable expression, but .moduleY is not a valid expression.
+
+https://www.python.org/dev/peps/pep-0328/#rationale-for-absolute-imports
+
+
+goood practice: 
+
+user absolute imports. dont rely on relative. is not as explicit.
