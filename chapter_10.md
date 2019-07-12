@@ -49,3 +49,5 @@ In most cases, you'll never have to call next yourself because the python `for` 
     Therefore, iterators are also iterable, but iterables are not iterators.
 
 Luciano Ramalho, author of `Fluent Python`.
+
+An iterable is any object that implements the `__iter__` method which returns an iterator. That includes any of the built-in container objects as well as generators.

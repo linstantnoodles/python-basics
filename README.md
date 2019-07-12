@@ -24,11 +24,11 @@ Note: Alot of the world still use python 2.7. The material will be in python 3 b
 			- sets, maps
 * functions (done)
 * classes (done)
-* modules / imports (TBD)
+* modules / imports (done)
 * comprehensions (done)
 * iterators (done)
 * generators (done)
-* file I/O
+* file I/O (done)
 * namespaces (done)
 * Exceptions
 * PEP / Style / Idioms

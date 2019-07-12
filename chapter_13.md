@@ -1,20 +1,6 @@
 # Comprehensions
 
-I think comprehensions are one of the most elegant and powerful (though often abused as well) language constructs ever created. It's a concise way of creating new built-in containers from existing iterables. Those containers are either lists, sets, or dictionaries.
-
-Note: an iterable is any object that returns an iterator. In python, that includes any built-in container type object.
-
-Most people including myself are familiar with list comprehensions since that's probably the most commonly use comprehension.
-
-The general grammar for any comprehension is:
-
-```python
-for ANY_ARBITRARY_EXPRESSION in ANY_ITERABLE OPTIONAL_COMPARISON OPTIONAL_COMPREHENSION
-```
-
-Now lets look at concrete examples of specific comprehensions to get a better grip on how it works:
-
-## List comprehensions
+Comprehensions are one of my favorite language constructs in Python and I always miss them when programming in other languages. It's a concise way of creating new built-in containers (lists, sets, and dictionaries) from existing iterables.
 
 Here's an example where we create a new list containing the squares of all the elements in the original list:
 
@@ -24,18 +10,32 @@ Here's an example where we create a new list containing the squares of all the e
 [1, 4, 9]
 ```
 
-Now lets add a condition that will only perform the expression `i * i` for the odd numbers:
+The expression `[i * i for i in numbers]` is the list comprehension expression. It's called a "list comprehension" because we're creating a new list and python uses the word "comprehension" to mean "inclusion" (borrowed from [set theory](https://en.wikipedia.org/wiki/Set-builder_notation)). 
+
+While list comprehensions are probably the most commonly found in python code bases, there are also set and dictionary comprehensions which I'll cover later.
+
+The grammar for a comprehension is:
+
+```python
+for ELEMENT_EXPRESSION in ITERABLE OPTIONAL_COMPARISON_EXPRESSION OPTIONAL_COMPREHENSION_EXPRESSION
+```
+
+This grammar applies to all three (list, set, dictionary) comprehensions. Lets start with the common one: list.
+
+## List comprehensions
+
+You've already seen the `for ELEMENT_EXPRESSION in ITERABLE` syntax used in the example above (it was `[i * i for i in numbers]` in case you forgot), but as you can see from the grammar we can also include an optional comparison expression.
+
+So lets add a condition that will perform the expression `i * i` only if `i` is an odd number:
 
 ```bash
 >>> [i * i for i in numbers if i % 2 == 1]
 [1, 9]
 ```
 
-As you can see, `i` obtained from the `for` expression is visible both in `ANY_ARBITRARY_EXPRESSION` and `OPTIONAL_COMPARISON`.
+As you can see, the value of `i` from the `for` expression is visible both in `ELEMENT_EXPRESSION` and `OPTIONAL_COMPARISON_EXPRESSION`. We can further expand the complexity of each of the component expressions. 
 
-We can even expand the complexity of each of the component parts. 
-
-For example, lets use a list comprehension to create a list used in another list comprehension!
+For example, we know that the `for` expression in the comprehension expects an iterable right? Well, what does a list comprehension return? An iterable! So lets create a new list using a list comprehension that uses an interable created by another list comprehension!
 
 
 ```bash
@@ -43,14 +43,14 @@ For example, lets use a list comprehension to create a list used in another list
 [1, 16, 81]
 ```
 
-Or we can use a list comprehension as our arbitrary expression so we get a list of lists.
+Or we can use a list comprehension for the `ELEMENT_EXPRESSION` part so we get a list of lists.
 
 ```bash
 >>> [[i for i in range(3)] for i in numbers]
 [[0, 1, 2], [0, 1, 2], [0, 1, 2]]
 ```
 
-And we can also go nuts and do both!
+And we can also go nuts and do both! (protip: do this if you want to really, really want to annoy other programmers)
 
 ```bash
 >>> [[i for i in range(3)] for i in [i * i for i in numbers]]
@@ -59,45 +59,53 @@ And we can also go nuts and do both!
 
 So far, we've only looked at examples of comprehensions that include the expression, the condition, and the optional comparison part of the grammar. 
 
-Here's one where we continue an existing list comprehension with _another_ list comprehension. Basically, this is adding inner loops.
+Here's one where we continue an existing list comprehension with _another_ list comprehension. This is equivalent to adding an "inner loop" in the tradional procedural sense.
 
-```bash
->>> numbers = [1, 2, 3]
->>> [i * j for i in numbers for j in numbers]
-[1, 2, 3, 2, 4, 6, 3, 6, 9]
-```
-
-This is equivalent to the following:
+For example, lets say we have two lists and we want to create a new list that represents the cartisian product of both lists. To do this procedurally, we'll have two loops and then manually append the computed value to an list we initialize.
 
 ```bash
 >>> result = []
->>> for i in numbers:
-...     for j in numbers:
-...             result.append(i * j)
-...
+>>> for i in A:
+...     for j in B:
+...             result.append((i, j))
+... 
 >>> result
-[1, 2, 3, 2, 4, 6, 3, 6, 9]
+[(1, 'A'), (1, 'B'), (2, 'A'), (2, 'B')]
 ```
 
- The nested comprehensions we saw earlier still used a single loop in the parent comprehension. In the comprehension above, there are two loops. You also extend it to having even more loops! However, having multiple loops in the comprehension isn't very common and from my experience it makes your code a lot less readable.
+So we loop through A, and for each element in A we loop through B and create a ordered pair (represented by a `tuple`).
+
+Well, there's a nicer way to do this with comprehensions:
+
+
+```bash
+>>> A = [1, 2]
+>>> B = ['A', 'B']
+>>> [(i, j) for i in A for j in B]
+[(1, 'A'), (1, 'B'), (2, 'A'), (2, 'B')]
+```
+
+In the comprehension above, there are two loops. The outer loop iterates through `A` and the inner loop iterates through `B`. Note that this is very different from the nested comprehension (`[x * x for x in [i * i for i in numbers]]`) we covered earlier because in a nested comprehension, the two loops are part of separate, independent list comprehension expressions. In this example, one loop depends on the other within the same comprehension.
 
 ## Dictionary comprehensions
 
 The syntax for dictionary comprehensions is very similar to list comprehensions. Rather than creating new list objects, we're creating new dictionaries.
+
+Here's an example where we create a new dictionary from a list of numbers where we map the value of the number to its square:
 
 ```bash
 >>> {i:i*i for i in numbers}
 {1: 1, 2: 4, 3: 9}
 ```
 
-Like list comprehensions, nested loops are supported:
+Just like list comprehensions, nested loops are supported:
 
 ```bash
 >>> {i*j:i*i for i in numbers for j in numbers}
 {1: 1, 2: 4, 3: 9, 4: 4, 6: 9, 9: 9}
 ```
 
-Again, here's the equivalent without comprehensions
+Again, here's the equivalent without comprehensions:
 
 ```bash
 >>> result = {}
@@ -123,7 +131,7 @@ Keep the braces, but drop the colon `:` and you now have a set comprehension!
 {1, 2, 3, 4, 6, 9}
 ```
 
-# Um, this is cool but can't we just use map or filter for creating new lists?
+# Ummmm, can't we just use map or filter for creating new lists? This comprehension stuff doesn't seem necessary.
 
 There's nothing wrong with that, but lets compare a simple example using both approaches side to side and get a feel for the differences.
 
@@ -169,7 +177,6 @@ With comprehensions:
 [4]
 ```
 
-
 In scenarios similar to the examples above, I prefer comprehensions because:
 
 * I don't need to make an extra call to convert the map or filter object into a list.
@@ -177,6 +184,4 @@ In scenarios similar to the examples above, I prefer comprehensions because:
 * We can perform _both_ filter and map using the same list comprehension. Whereas if we used map and filter we would have to filter first, then map.
 
 
-Sources: 
-
-https://docs.python.org/3/tutorial/datastructures.html#nested-list-comprehensions
+Hope that improves your understanding (and love) of comprehensions!
