@@ -10,7 +10,7 @@ Here's an example where we create a new list containing the squares of all the e
 [1, 4, 9]
 ```
 
-The expression `[i * i for i in numbers]` is the list comprehension expression. It's called a "list comprehension" because we're creating a new list and python uses the word "comprehension" to mean "inclusion" (borrowed from [set theory](https://en.wikipedia.org/wiki/Set-builder_notation)). 
+The expression `[i * i for i in numbers]` is the list comprehension expression. It's called a "list comprehension" because we're creating a new list and python uses the word "comprehension" to mean "inclusion" (borrowed from [set theory](https://en.wikipedia.org/wiki/Set-builder_notation)).
 
 While list comprehensions are probably the most commonly found in python code bases, there are also set and dictionary comprehensions which I'll cover later.
 
@@ -33,7 +33,7 @@ So lets add a condition that will perform the expression `i * i` only if `i` is 
 [1, 9]
 ```
 
-As you can see, the value of `i` from the `for` expression is visible both in `ELEMENT_EXPRESSION` and `OPTIONAL_COMPARISON_EXPRESSION`. We can further expand the complexity of each of the component expressions. 
+As you can see, the value of `i` from the `for` expression is visible both in `ELEMENT_EXPRESSION` and `OPTIONAL_COMPARISON_EXPRESSION`. We can further expand the complexity of each of the component expressions.
 
 For example, we know that the `for` expression in the comprehension expects an iterable right? Well, what does a list comprehension return? An iterable! So lets create a new list using a list comprehension that uses an interable created by another list comprehension!
 
@@ -57,7 +57,7 @@ And we can also go nuts and do both! (protip: do this if you want to really, rea
 [[0, 1, 2], [0, 1, 2], [0, 1, 2]]
 ```
 
-So far, we've only looked at examples of comprehensions that include the expression, the condition, and the optional comparison part of the grammar. 
+So far, we've only looked at examples of comprehensions that include the expression, the condition, and the optional comparison part of the grammar.
 
 Here's one where we continue an existing list comprehension with _another_ list comprehension. This is equivalent to adding an "inner loop" in the tradional procedural sense.
 
@@ -68,7 +68,7 @@ For example, lets say we have two lists and we want to create a new list that re
 >>> for i in A:
 ...     for j in B:
 ...             result.append((i, j))
-... 
+...
 >>> result
 [(1, 'A'), (1, 'B'), (2, 'A'), (2, 'B')]
 ```
@@ -163,14 +163,14 @@ With comprehensions:
 [2]
 ```
 
-Using map and filter to get squares of evens: 
+Using map and filter to get squares of evens:
 
 ```bash
 >>> list(map(lambda x: x * x, filter(lambda x: x % 2 == 0, numbers)))
 [4]
 ```
 
-With comprehensions: 
+With comprehensions:
 
 ```bash
 >>> [i * i for i in numbers if i % 2 == 0]
@@ -185,3 +185,34 @@ In scenarios similar to the examples above, I prefer comprehensions because:
 
 
 Hope that improves your understanding (and love) of comprehensions!
+
+## Assessment
+
+# lists
+
+* create a new list with same values as old list
+* create a new list by transforming each element
+* create a new list based on some condition (filtering)
+** single condition
+** multiple conditions
+* do the same with transformation
+* do the transformation using an if/else statement
+* do a transformation with two lists
+** three?
+** generate all combinations of elements in two lists
+** do it with a condition for each loop?
+** create a list of lists. i.e a matrix.
+** create a matrix of matrices
+** flattening a list of lists
+** flattening a list of list of lists
+
+concepts:
+    - understanding the grammar
+    - easier to write in terms of for loops and then convert into LC structure
+
+next:
+
+    write test cases, basically. give ppl instructions for downloading and then writing tests. TDD from the start.
+    each failure will result in
+https://stackoverflow.com/questions/2893569/show-me-some-cool-python-list-comprehensions
+https://spapas.github.io/2016/04/27/python-nested-list-comprehensions/

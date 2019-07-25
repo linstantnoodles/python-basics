@@ -1,4 +1,4 @@
-# Relational and Logical Operations 
+# Relational and Logical Operations
 
 From [python doc](https://docs.python.org/2.0/ref/objects.html)
 
@@ -6,7 +6,7 @@ From [python doc](https://docs.python.org/2.0/ref/objects.html)
 
 ## Relational (comparison) Operations
 
-Python supports the following comparison operators: 
+Python supports the following comparison operators:
 
 * `==` (equal)
 * `!==` (not equal)
@@ -16,11 +16,11 @@ Python supports the following comparison operators:
 * `>=` (greater than or equal)
 * `is` (lol)
 
-First of all, any comparison between anything requires a common unit of measure. Is thix apple less than that orange? Um, maybe. What's the unit? Are we talking about weight? mass? fiber content? 
+First of all, any comparison between anything requires a common unit of measure. Is thix apple less than that orange? Um, maybe. What's the unit? Are we talking about weight? mass? fiber content?
 
 So before we can talk about comparisons, we have to talk about the objects we're comparing.
 
-Python objects have three dimensions / units with which comparisons can be done: 
+Python objects have three dimensions / units with which comparisons can be done:
 
 * Identity
 * Type
@@ -32,17 +32,17 @@ Comparison on identity is easy. It's either the same object or it's not.
 
 Comparison on type is also easy. It's either the same type or it's not.
 
-Comparison on value is not so easy. What is the value of the integer `1`? (Not a trick question). Now, what's the value of our set `{1, 2, 3}`? Or a function? Or some custom object you created yourself? 
+Comparison on value is not so easy. What is the value of the integer `1`? (Not a trick question). Now, what's the value of our set `{1, 2, 3}`? Or a function? Or some custom object you created yourself?
 
 Whether a comparison is done on identity, type, or value depends both on the comparison operator we're using and the objects we're comparing.
 
 The default behavior for equality comparison (== and !=) is based on the identity of the objects. This is because all types inherit from the base object and the behavior of the equality operators for the base object is identity comparison. The equality operators are the only operators with default behavior. The behavior of all other comparison operators need to be implemented by different object types.
 
-The `is` operator is a special case. It _always_ compares by identity and cannot be overriden.	
+The `is` operator is a special case. It _always_ compares by identity and cannot be overriden.
 
-### Numeric 
+### Numeric
 
-All numeric comparisons (including equality comparison) are based on value. 
+All numeric comparisons (including equality comparison) are based on value.
 
 ```python
 >>> a = 123
@@ -67,11 +67,13 @@ Outside of numeric types, comparisons across different types isn't supported. In
 
 Sequences use "lexicographical comparison", which is based on [lexicographical order](https://en.wikipedia.org/wiki/Lexicographical_order)
 
-It's a general form of [alphabetical order](https://en.wikipedia.org/wiki/Alphabetical_order). In alphabetical ordering of words, the order of words is determined by the comparison of their individual letters based on their position in the english _alphabet_. This is the ordering you'll be familiar with if you've ever used an english dictionary. 
+It's a general form of [alphabetical order](https://en.wikipedia.org/wiki/Alphabetical_order). In alphabetical ordering of words, the order of words is determined by the comparison of their individual letters based on their position in the english _alphabet_. This is the ordering you'll be familiar with if you've ever used an english dictionary.
 
 For example, `alan` comes before `alba`. The first and second characters are equal but since the third letter a appears in the alphabet earlier than b, `alan` comes first.
 
-Lexicographical comparison follows the same process, just in a more general form. Why general? for one, it doesn't require that we only work with english letters. Maybe it's emojis and the "alphabet" (mathematically known as a totally ordered set) is the unicode codepoint that represents those emojis. Or maybe it's <your own made up type here> and the alphabet is <one you make up>.
+Lexicographical comparison follows the same process, just in a more general form.
+
+Why general? for one, it doesn't require that we only work with english letters. Maybe it's emojis and the "alphabet" (mathematically known as a totally ordered set) is the unicode codepoint that represents those emojis. Or maybe it's <your own made up type here> and the alphabet is <one you make up>.
 
 Examples:
 
@@ -86,7 +88,7 @@ True
 False
 >>> [1, 2, 3] == [1, 2, 3]
 True
->>> 
+>>>
 ```
 
 ### Unordered containers (maps and sets)
@@ -145,17 +147,17 @@ False
 True
 ```
 
-## Logical Operators 
+## Logical Operators
 
-The three logical operators commonly supported in programming languages are: 
+The three logical operators commonly supported in programming languages are:
 
-* AND 
-* OR 
+* AND
+* OR
 * NOT
 
 I've mostly learned those operators as `&&`, `||`, and `!` in other languages. In Python, they are `and`, `or`, and `not`, which are syntactically equal to their natural language counterparts.
 
-```bash 
+```bash
 >>> True and True
 True
 >>> True or True
@@ -164,7 +166,7 @@ True
 False
 >>> True and False
 False
->>> 
+>>>
 ```
 
 Even though I'm very accustomed to reading `&&`, I've grown to prefer pythons more verbose `and`.
