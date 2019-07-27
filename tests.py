@@ -71,16 +71,42 @@ class TestStringMethods(unittest.TestCase):
 
     # generate all combinations of elements given two lists
     def test_exercise7(self):
-        pass
+        # given elements [1, 2] and [3, 4]. combinations = 2 * 2 = 4 = (1, 3), (1, 4), (2, 3), (2, 4)
+        arg1 = [1, 2]
+        arg2 = [3, 4]
+        result = exercise7(arg1, arg2)
 
-    #  generate all combinations of elements in two lists
-    #  do it with a condition for each loop?
+        self.assertEqual(result, [(1, 3), (1, 4), (2, 3), (2, 4)])
+
+     # generate all combinations of elements given two lists only if element in first list is even
+    def test_exercise8(self):
+        # given elements [1, 2] and [3, 4]. combinations = 2 * 2 = 4 = (2, 3), (2, 4)
+        arg1 = [1, 2]
+        arg2 = [3, 4]
+        result = exercise8(arg1, arg2)
+
+        self.assertEqual(result, [(2, 3), (2, 4)])
+
     #  create a list of lists. i.e a matrix.
-    #  create a matrix of matrices
+    def test_exercise9(self):
+        arg = [1, 2, 3] # each value is all the values for each row in the matrix
+        result = exercise9(arg)
+
+        self.assertEqual(result, [[1, 1, 1], [2, 2, 2], [3, 3, 3]])
+        self.assertIsNot(arg, result)
+
     #  flattening a list of lists
-    #  flattening a list of list of lists
+    def test_exercise11(self):
+        arg = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+        result = exercise11(arg)
 
+        self.assertEqual(result, [1, 2, 3, 4, 5, 6, 7, 8, 9])
+        self.assertIsNot(arg, result)
 
+    # list of 100 numbers from 0 to 100
+    def test_exercise13(self):
+        result = exercise13(5)
+        self.assertEqual(result, [0, 1, 2, 3, 4])
 
 if __name__ == '__main__':
     unittest.main()
