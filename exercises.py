@@ -36,3 +36,6 @@ def exercise11(arg):
 
 def exercise13(num):
     return [x for x in range(num)]
+
+def exercise14(arg):
+    return [yT for row in arg for x in row for y in x]

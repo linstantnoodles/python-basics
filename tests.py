@@ -108,5 +108,10 @@ class TestStringMethods(unittest.TestCase):
         result = exercise13(5)
         self.assertEqual(result, [0, 1, 2, 3, 4])
 
+    def test_exercise14(self):
+        arg = [[[1], [2], [3]], [[4], [5], [6]]]
+        result = exercise14(arg)
+        self.assertEqual(result, [1, 2, 3, 4, 5, 6])
+
 if __name__ == '__main__':
     unittest.main()
