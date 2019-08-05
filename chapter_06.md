@@ -14,7 +14,8 @@ Python supports the following comparison operators:
 * `<=` (less than or equal)
 * `>` (greater than)
 * `>=` (greater than or equal)
-* `is` (lol)
+
+Membership
 
 First of all, any comparison between anything requires a common unit of measure. Is thix apple less than that orange? Um, maybe. What's the unit? Are we talking about weight? mass? fiber content?
 
