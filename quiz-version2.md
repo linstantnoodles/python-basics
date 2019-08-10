@@ -165,39 +165,13 @@ for x in some_list:
 x = 5
 ```
 
-## Question 5 
-
-```python
-a = 5 * 2
-b = 5 / 2
-c = 5.0 * 2.0
-d = 5.0 * 2 
-e = 5.0 / 2
-```
-What's the value of a, b, c, d, and e? 
-
-## Question 6
-
-What do each of the following three expressions evaluate to?
-1. `{} == {}` 
-2. `{'a': 1} > {}`
-3. `{} < {}`
-
-## Question 7 
-
-```python
-class A():
-    pass
-```
-
-What is the value of `A() == A()`?
-
-## Question 8 
+## Question 5
 
 ```python
 class Lamp
     def turn_on():
         print("Turning on the Lamp") 
+
 class Computer:
     def turn_on():
   print("Turning on the Computer")
@@ -209,24 +183,6 @@ x.turn_on()
 ```
 
 Will this program run without any errors? Why or why not?
-
-## Question 9 
-
-What's the minimum and maximum value of an integer on a 32 bit machine?
-
-A)  -2147483648 and 2147483647
-B) No defined maximum. The precision is arbitrary and is limited by memory available
-C) -9999999999999999999 and 9999999999999999999
-
-## Question 10 
-```python
-x = 7
-y = x
-print(y is x)
-x += 1
-print(y is x)  
-```
-What are the values of the two print statements? 
 
 # Explanations
 
@@ -378,13 +334,6 @@ The parsing step is [where errors in program grammar is caught](https://docs.pyt
 
 ## Question 3
 
-```python
-numbers  = [1, 1, 2, 3, 5]
-for x in numbers:
-    x = x * x 
-```
-Once the loop terminates, what's the value of `x`? What's the value of `numbers`? 
-
 The final value of x is 25 and numbers remains unchanged [1, 1, 2, 3, 5]. The reason numbers remains unchanged is that at no point do we change the reference to integers in the list `numbers`. Our loop created a new name called `x`, and then for each expression `x = x * x` it bound that name to a new integer object (value of `x * x`)
 
 Another way to think about it is that this is actually just another case of the following: 
@@ -453,7 +402,9 @@ for x in some_list:
 x = 5
 ```
 
-They all create name bindings! Every identifier is referencing an object. Ok lets go through each: 
+They all create name bindings! Every introduction of an identifier introduces a new name into memory that points to an object.
+
+Ok lets go through each: 
 
 `import x` binds the name `x` to a module object 
 `from x import y` binds the name `y` to an object belonging to the module `x`
@@ -469,7 +420,6 @@ Here's an example where I define a class object referenced by `A` and then updat
 ```bash 
 >>> class A():
 ...     pass
-... 
 >>> A
 <class '__main__.A'>
 >>> A = 5
@@ -479,63 +429,40 @@ Here's an example where I define a class object referenced by `A` and then updat
 
 ## Question 5 
 
-```python
-a = 5 * 2
-b = 5 / 2
-c = 5.0 * 2.0
-d = 5.0 * 2 
-e = 5.0 / 2
-```
-What's the value of a, b, c, d, and e? 
+Both statements will be printed successfully! Why?
 
-## Question 6
+Firstly, names are not associated with types in Python - once you have a name, it can reference any other object. 
 
-What do each of the following three expressions evaluate to?
-1. `{} == {}` 
-2. `{'a': 1} > {}`
-3. `{} < {}`
+Secondly, python uses a [duck type system](https://en.wikipedia.org/wiki/Duck_typing). You can refer to an attribute on an object regardless of its type. Even if we had an object, say, `Dog` that did not have the `turn_on` method, the expression `Dog().turn_on` will still execute and Python will attempt to find the attribute (though we know in this case that it will fail).
 
-## Question 7 
+Java, as an counter-example, uses a [nominal type system](https://en.wikipedia.org/wiki/Nominal_type_system). This means the variables are declared with types and trying to reassign a name to a different type will yield errors (because equivalence is based strictly on the name of the type declarations):
 
-```python
-class A():
-    pass
-```
+```java
+class Lamp {
+  boolean isOn;
+  void turnOn() {
+    System.out.println("Turning on lamp");
+  }
+}
 
-What is the value of `A() == A()`?
+class Computer { 
+  void turnOn() { 
+    System.out.println("Turning on computer");
+  }
+}
 
-## Question 8 
-
-```python
-class Lamp
-    def turn_on():
-        print("Turning on the Lamp") 
-class Computer:
-    def turn_on():
-  print("Turning on the Computer")
-  
-x = Lamp() 
-x.turn_on()
-x = Computer() 
-x.turn_on() 
+class Example {
+public static void main(String[] args) {
+    Lamp x = new Lamp();
+    x.turnOn();
+    x = new Computer();
+    x.turnOn();
+  }
+}
 ```
 
-Will this program run without any errors? Why or why not?
+Trying to compile this program raises:
 
-## Question 9 
-
-What's the minimum and maximum value of an integer on a 32 bit machine?
-
-A)  -2147483648 and 2147483647
-B) No defined maximum. The precision is arbitrary and is limited by memory available
-C) -9999999999999999999 and 9999999999999999999
-
-## Question 10 
-```python
-x = 7
-y = x
-print(y is x)
-x += 1
-print(y is x)  
+```java
+Main.java:18: error: incompatible types: Computer cannot be converted to Lamp
 ```
-What are the values of the two print statements? 
