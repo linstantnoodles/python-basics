@@ -113,6 +113,336 @@ print(y is x)
 ```
 What are the values of the two print statements?
 
+---
+Will this print an error? 
+
+```python
+def foo(x):
+  if x: 
+      return 1 + 'NaN'
+  return hello world 5 # Unsupported mix-type operation
+```
+
+What's the output of `foo(True)`?
+- syntax vs type errors 
+note: if u find your explanation getting big, ask urself if your explaining a diff concept 
+
+---
+
+precedence? 
+
+in, not in, is, is not, <, <=, >, >=, !=, ==
+
++, -
+  
+Addition and subtraction
+
+*, @, /, //, %
+
+()
+
+higheest: parenthetical exprexsions 
+ok so there's i say 3 categories - arithmetic operator precedence (most people know this) and this includes parenthesis 
+and then there are comparisons (where we get tripped up)
+
+>>> 3 * 5 == 5 * 3 (multilications will happen FIRST, followed by comparison operator)
+
+bad answer: 
+
+>>> 5 < 6 == True
+False
+
+>>> 5 < 6 == True
+False
+>>> 5 < 6 == 6
+True
+
+- basically to test https://docs.python.org/2/reference/expressions.html#comparisons
+
+what's happening is neither left or right associativity with comparisons.
+
+>>> True == True == True
+True
+
+>>> True == False == False
+False
+
+if left associative, top will equal True
+
+>>> (True == False) == False
+True
+
+if right associative, following will equal true
+>>> True == False == False
+False
+
+b.c True == (False == False) is True 
+. 
+
+what does this print: 
+
+>>> False == False == False == True
+
+equivalent to 
+False == False and False == False and False == True
+
+
+
+
+
+when equal, is it always left associative? 
+
+>>> 6 * 5 / 2
+15
+>>> 5 + 5 -2 
+8
+>>> 5 * 2 ** 2
+20
+
+Nope! exponents is higher precedence than *.
+
+general rule of thumb: (come up with one)
+
+---
+
+can you enforce implementation of a method? if so, how? this is equivalent to java abstract classes.
+
+bonus: when should this be used
+
+Here's an example using an abstract class to enforce a protcol:
+
+```python
+from abc import ABC, abstractmethod
+
+class MyCar(ABC):
+  @abstractmethod
+  def speed(self):
+    pass 
+
+class MyTesla(MyCar):
+  def speed(self):
+    return 60
+```
+
+If `MyTesla` did not implement a concrete `speed` method, attempting to instantiate it would result in a type error:
+
+```python
+TypeError: Can't instantiate abstract class MyTesla with abstract methods speed
+```
+
+---
+mutable vs not mutable
+
+for each data type, state whether it's mutable or not 
+
+---
+operations for lists that are mutable vs not: 
+
+which ones mutate existing list? 
+what's the difference between .pop and del? why use one over the other?
+
+---identity 
+
+the base object == compares by ___
+> This is because all types inherit from the base object and the behavior of the equality operators for the base object is identity comparison
+
+---
+lambdas 
+
+is this valid? 
+
+```bash
+>>> lambda x: a = x
+  File "<stdin>", line 1
+SyntaxError: can't assign to lambda
+```
+
+what does this execute? 
+
+def parent():
+    def child():
+        print("im the child")
+    child()
+    print("im the parent")
+
+
+--- 
+
+```python
+>>> def foo(name=5, c):
+...     print(name) 
+... 
+  File "<stdin>", line 1
+SyntaxError: non-default argument follows default argument
+```
+
+
+what does that print? 
+
+---
+do unpacking but do it in reverse * vs **
+
+
+--- class scope
+
+>>> class Foo(): 
+...     age = 12
+...     def greet(self):
+...         print("Hi my age is {}".format(age))
+...     print("Age: {}".format(age))
+... 
+Age: 12
+>>> x = Foo()
+>>> x.greet()
+
+what does this print? 
+
+
+
+what I want to cover: 
+
+```
+Global
+* The inside of a module (module scope)
+
+Local
+* The inside of a class (class scope)
+* The inside of a function (function scope)
+```
+
+greeting = 'Hello'
+class Person():
+  x = greeting 
+  print(x)
+  def say_hello(self):
+    print(greeting)
+
+def say_hello():
+  print(greeting)
+  def hello_again():
+    print(greeting)
+  hello_again()
+
+Person().say_hello()
+say_hello()
+
+How many times does `greeting` get printed? 
+
+name = 'Bob'
+def foo():
+    name = 'George'
+    print(name)
+
+foo()
+print(name) 
+
+What gets printed? 
+
+
+name = 'Bob'
+def foo():
+    return name
+
+What's the value of `foo()`?
+
+in exp. we'll discuss how to fix it.
+
+----
+
+example_one.py
+name = 'Bob'
+example_two.py
+import example_one
+name = 'Joe' 
+print(name)
+print(example_one.name)
+
+what gets printed? 
+
+
+lesson: namespace isolation
+
+---
+q2: does name resolution enter other modules? 
+example_one.py
+name = 'bob'
+example_two.py
+import example_one
+print(name)
+
+---
+
+
+name resolution
+
+of function to enclosing function. shadowing effect
+
+
+def fn():
+    a = 'a'
+    b = 'b'
+    def nested_fn(a, b, c):
+       print('{}, {}, {}'.format(a, b, c))
+    nested_fn(7, 11, 'c')
+
+fn()
+
+what gets printed?
+
+local vs immediated enclosing function lookup
+---
+
+def fn():
+  print(id)
+
+id = 5 
+
+def fn():
+  print(id)
+
+explanation: global vs module level lookup
+---
+
+class Outer:
+  x = '5'
+  class Inner:
+    print(x)
+
+what gets printed? 
+
+
+class OuterClass:
+  global OuterClass
+  print(OuterClass)
+
+
+def outer_function():
+  print(outer_function)
+
+
+# class can reference enclosing scopes, but does not act like one 
+def foo():
+  a = 5 
+  class A():
+    print(a)
+
+
+https://stackoverflow.com/questions/1765677/nested-classes-scope
+
+
+next:
+
+iterators (5)
+scope ()
+name resolution
+clases 
+generators
+decorators - https://stackoverflow.com/questions/13037426/how-to-access-class-scope-variables-without-self  
+async 
+imports
+I/O 
+list comprehensions
+
 # Explanations
 # Questions
 
@@ -165,13 +495,39 @@ for x in some_list:
 x = 5
 ```
 
-## Question 5
+## Question 5 
+
+```python
+a = 5 * 2
+b = 5 / 2
+c = 5.0 * 2.0
+d = 5.0 * 2 
+e = 5.0 / 2
+```
+What's the value of a, b, c, d, and e? 
+
+## Question 6
+
+What do each of the following three expressions evaluate to?
+1. `{} == {}` 
+2. `{'a': 1} > {}`
+3. `{} < {}`
+
+## Question 7 
+
+```python
+class A():
+    pass
+```
+
+What is the value of `A() == A()`?
+
+## Question 8 
 
 ```python
 class Lamp
     def turn_on():
         print("Turning on the Lamp") 
-
 class Computer:
     def turn_on():
   print("Turning on the Computer")
@@ -183,6 +539,24 @@ x.turn_on()
 ```
 
 Will this program run without any errors? Why or why not?
+
+## Question 9 
+
+What's the minimum and maximum value of an integer on a 32 bit machine?
+
+A)  -2147483648 and 2147483647
+B) No defined maximum. The precision is arbitrary and is limited by memory available
+C) -9999999999999999999 and 9999999999999999999
+
+## Question 10 
+```python
+x = 7
+y = x
+print(y is x)
+x += 1
+print(y is x)  
+```
+What are the values of the two print statements? 
 
 # Explanations
 
@@ -334,6 +708,13 @@ The parsing step is [where errors in program grammar is caught](https://docs.pyt
 
 ## Question 3
 
+```python
+numbers  = [1, 1, 2, 3, 5]
+for x in numbers:
+    x = x * x 
+```
+Once the loop terminates, what's the value of `x`? What's the value of `numbers`? 
+
 The final value of x is 25 and numbers remains unchanged [1, 1, 2, 3, 5]. The reason numbers remains unchanged is that at no point do we change the reference to integers in the list `numbers`. Our loop created a new name called `x`, and then for each expression `x = x * x` it bound that name to a new integer object (value of `x * x`)
 
 Another way to think about it is that this is actually just another case of the following: 
@@ -402,9 +783,7 @@ for x in some_list:
 x = 5
 ```
 
-They all create name bindings! Every introduction of an identifier introduces a new name into memory that points to an object.
-
-Ok lets go through each: 
+They all create name bindings! Every identifier is referencing an object. Ok lets go through each: 
 
 `import x` binds the name `x` to a module object 
 `from x import y` binds the name `y` to an object belonging to the module `x`
@@ -420,6 +799,7 @@ Here's an example where I define a class object referenced by `A` and then updat
 ```bash 
 >>> class A():
 ...     pass
+... 
 >>> A
 <class '__main__.A'>
 >>> A = 5
@@ -429,40 +809,63 @@ Here's an example where I define a class object referenced by `A` and then updat
 
 ## Question 5 
 
-Both statements will be printed successfully! Why?
+```python
+a = 5 * 2
+b = 5 / 2
+c = 5.0 * 2.0
+d = 5.0 * 2 
+e = 5.0 / 2
+```
+What's the value of a, b, c, d, and e? 
 
-Firstly, names are not associated with types in Python - once you have a name, it can reference any other object. 
+## Question 6
 
-Secondly, python uses a [duck type system](https://en.wikipedia.org/wiki/Duck_typing). You can refer to an attribute on an object regardless of its type. Even if we had an object, say, `Dog` that did not have the `turn_on` method, the expression `Dog().turn_on` will still execute and Python will attempt to find the attribute (though we know in this case that it will fail).
+What do each of the following three expressions evaluate to?
+1. `{} == {}` 
+2. `{'a': 1} > {}`
+3. `{} < {}`
 
-Java, as an counter-example, uses a [nominal type system](https://en.wikipedia.org/wiki/Nominal_type_system). This means the variables are declared with types and trying to reassign a name to a different type will yield errors (because equivalence is based strictly on the name of the type declarations):
+## Question 7 
 
-```java
-class Lamp {
-  boolean isOn;
-  void turnOn() {
-    System.out.println("Turning on lamp");
-  }
-}
-
-class Computer { 
-  void turnOn() { 
-    System.out.println("Turning on computer");
-  }
-}
-
-class Example {
-public static void main(String[] args) {
-    Lamp x = new Lamp();
-    x.turnOn();
-    x = new Computer();
-    x.turnOn();
-  }
-}
+```python
+class A():
+    pass
 ```
 
-Trying to compile this program raises:
+What is the value of `A() == A()`?
 
-```java
-Main.java:18: error: incompatible types: Computer cannot be converted to Lamp
+## Question 8 
+
+```python
+class Lamp
+    def turn_on():
+        print("Turning on the Lamp") 
+class Computer:
+    def turn_on():
+  print("Turning on the Computer")
+  
+x = Lamp() 
+x.turn_on()
+x = Computer() 
+x.turn_on() 
 ```
+
+Will this program run without any errors? Why or why not?
+
+## Question 9 
+
+What's the minimum and maximum value of an integer on a 32 bit machine?
+
+A)  -2147483648 and 2147483647
+B) No defined maximum. The precision is arbitrary and is limited by memory available
+C) -9999999999999999999 and 9999999999999999999
+
+## Question 10 
+```python
+x = 7
+y = x
+print(y is x)
+x += 1
+print(y is x)  
+```
+What are the values of the two print statements? 
