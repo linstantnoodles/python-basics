@@ -124,8 +124,16 @@ def foo(x):
 ```
 
 What's the output of `foo(True)`?
+
+Syntax errors are caught 
 - syntax vs type errors 
 note: if u find your explanation getting big, ask urself if your explaining a diff concept 
+
+https://github.com/python/cpython/blob/master/Parser/parsetok.c#L268
+https://tomlee.co/wp-content/uploads/2012/11/108_python-language-internals.pdf
+https://github.com/python/cpython/blob/master/Parser/tokenizer.c#L1033
+https://github.com/python/cpython/blob/master/Parser/tokenizer.c#L1587
+https://github.com/python/cpython/blob/master/Python/ceval.c
 
 ---
 
@@ -187,14 +195,11 @@ equivalent to
 False == False and False == False and False == True
 
 
-
-
-
 when equal, is it always left associative? 
 
 >>> 6 * 5 / 2
 15
->>> 5 + 5 -2 
+>>> 5 + 5 - 2 
 8
 >>> 5 * 2 ** 2
 20
@@ -414,11 +419,19 @@ what gets printed?
 class OuterClass:
   global OuterClass
   print(OuterClass)
+  https://stackoverflow.com/a/2035812/2939548
 
 
 def outer_function():
   print(outer_function)
 
+  https://stackoverflow.com/questions/26193653/why-does-a-class-body-get-executed-at-definition-time
+https://stackoverflow.com/questions/16885737/why-does-a-class-get-called-when-not-initiated-python
+---
+
+everything is executed except for functions bodies at the module level. they create their own namespace that's not part of the lookup chain.
+
+wow super interesting: http://python-history.blogspot.com/2009/02/adding-support-for-user-defined-classes.html
 
 # class can reference enclosing scopes, but does not act like one 
 def foo():
@@ -428,7 +441,7 @@ def foo():
 
 
 https://stackoverflow.com/questions/1765677/nested-classes-scope
-
+https://www.toptal.com/python/top-10-mistakes-that-python-programmers-make
 
 next:
 
@@ -442,6 +455,7 @@ async
 imports
 I/O 
 list comprehensions
+the interpreeter- https://stackoverflow.com/questions/1482649/in-python-interpreter-return-without
 
 # Explanations
 # Questions
