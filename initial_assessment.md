@@ -8,6 +8,8 @@ x = 11
 
 What's the final value of `y`?
 
+Answer: names reference values. Assignments update reference to new object.
+
 
 ```python
 x = [1, 2, 3]
@@ -17,24 +19,29 @@ x = {}
 
 What's the final value of `y`?
 
-# mutability 
+Answer: same as above.
+
+# mutable vs immutable objects 
 
 ```python
 x = 7
 y = x
-print(y is x)
 x += 1
-print(y is x)  
 ```
 
-What are the values of the two print statements? 
+Is x the same object as y? What are their values?
+
+Answer: No. They start out referencing the same thing. The operation didn't mutate the existing object, it created a new one (because integers are immutable).
 
 ```python
 x = (1, 2)
 y = x 
 x += (3,)
-
 ```
+
+Is x the same object as y? What are their values?
+
+Answer: Tuples are immutable. Same idea. 
 
 ```python
 x = 'hello'
@@ -44,23 +51,31 @@ print(x)
 print(y is x)
 ```
 
+Is x the same object as y? What are their values?
+
+Answer: Strings are immutable. Same idea. 
+
 ```python
 x = []
 y = x 
 x += [1, 2]
-print(y)
-print(x)
-print(y is x)
 ```
+
+Is x the same object as y? What are their values?
+
+Answer: They are the same value! 
+
+https://stackoverflow.com/questions/2347265/why-does-behave-unexpectedly-on-lists?noredirect=1&lq=1
 
 ```python
 x = []
 y = x 
 x.append(5)
-print(y)
-print(x)
-print(y is x)
 ```
+
+Is x the same object as y? What are their values?
+
+Answer: Same as above! It's a mutation.
 
 # dynamic type checking 
 
@@ -129,6 +144,14 @@ my_fn(5)
 
 Is this a valid program?
 
+
+```python
+(lambda x, y=5: x * y)(5)
+```
+
+prints out what? 
+
+
 ## parameter unpacking 
 
 ```python
@@ -137,6 +160,15 @@ def foo(**args):
 
 foo(1, 2, 3)
 ```
+
+## arg evaluation once
+
+```
+def append_to(element, to=[]):
+    to.append(element)
+    return to
+```
+
 
 What gets printed? 
 
@@ -226,6 +258,16 @@ def foo():
 
 What does `foo()` print?
 
+## function is smallest possible name space creating block
+
+```python
+def foo():
+  if True:
+    a = 5
+  print(a)
+```
+
+What does this print?
 
 ## name resolution 
 
@@ -268,7 +310,21 @@ print(B.x)
 
 What gets printed ?
 
+## depth first 
 
+class A():
+  def save(self):
+    print('A.save')
+
+class B(A):
+  pass 
+
+class C():
+  def save(self):
+    print('C.save') 
+
+class D(B, C):
+  pass
 
 
 
@@ -331,16 +387,82 @@ https://python-history.blogspot.com/2010/06/method-resolution-order.html
 https://en.wikipedia.org/wiki/Monotonic_function
 https://www.python.org/download/releases/2.3/mro/
 
+## class attrs are shared with instances
+
+
 
 # iterators 
 
+[1, 2, 3] <- iterable
+iter(1, 2, 3) <- iterator + iterable
+{} <- iterable
+range(5) <- iterable
+[x for x in [1, 2, 3]] <- list iterable
+(x for x in [1, 2, 3]) <- iterator + iterable
+
+
+which of the following objects are iterators? which ones are iterables? 
+
+
+wat does the following print 
+
+next([1, 2, 3])
+
 # function closures 
 
-# first class functions
+## updating a variable
+
+
+def foo():
+  x = 5
+  def bar(y):
+    return y + x
+  return bar 
+
+foo()(5) 
+
+The return value of `foo` is the closure.
+
+
+ while a closure is an instance of a function, a value, whose 
+
+ > non-local variables have been bound either to values or to storage locations (depending on the language; see the lexical environment section below). 
+
+>  if functions with free variables are first-class, then returning one creates a closure.
+
+
+# first class functions (put with closures??)
+
+TBD
 
 # generators 
 
-# decorators
+## generator function vs generator object (iterator)
+
+```python
+def foo():
+  for i in range(1, 4):
+    yield i 
+```
+
+>>> my_gen = foo()
+
+
+```python
+def foo(): 
+  print('about to yield 1 ...')
+  yield 1 
+  print('about to yield 2 ...')
+  yield 2 
+  print('about to yield 3 ...')
+  yield 3
+```
+
+my_gen = foo()
+```
+
+
+# decorators (TBD)
 
 # classes 
 
@@ -362,39 +484,18 @@ What gets printed when I run this one?
 
 # Others
 
- def foo(bar=[]):        # bar is optional and defaults to [] if not specified
-...    bar.append("baz")    # but this line could be problematic, as we'll see...
-...    return bar
+```python
+def foo(bar=[]):
+  bar.append("baz")
+  return bar
+```
+
+If I call foo 4 times, what is the rseult?g
+https://docs.python-guide.org/writing/gotchas/
 
 
 
-
->>> class A(object):
-...     x = 1
-...
->>> class B(A):
-...     pass
-...
->>> class C(A):
-...     pass
-...
->>> print A.x, B.x, C.x
-1 1 1
-
-Makes sense.
-
->>> B.x = 2
->>> print A.x, B.x, C.x
-1 2 1
-
-Yup, again as expected.
-
->>> A.x = 3
->>> print A.x, B.x, C.x
-3 2 3
-
-
-## exceptions
+## exceptions (TBD)
 
 >>> try:
 ...     l = ["a", "b"]
@@ -424,5 +525,4 @@ IndexError: list index out of range
 ...
 
 
-- imports. when a file masks a module
-- 
+# Imports TBD
