@@ -4,24 +4,24 @@
 
 While many programming languages (such as python) use the word **function** from mathematics to represent [subroutines](https://en.wikipedia.org/wiki/Subroutine), they often do not share the properties of mathematical functions.
 
-One definition of a mathematical function from wikipedia is: 
+One definition of a mathematical function from wikipedia is:
 
 > A function is a process or a relation that associates each element x of a set X, the domain of the function, to a single element y of another set Y (possibly the same set)
 
-Many exceptions to this abound in python functions. 
+Many exceptions to this abound in python functions.
 
 For example, here's a function definition that accepts an argument `x` and returns a different value each time.
 
 ```python
 counter = 0
 def greeting(x):
-    global counter 
-    y = counter + x 
-    counter += 1 
-    return y 
+    global counter
+    y = counter + x
+    counter += 1
+    return y
 ```
 
-Now lets invoke it multiple times: 
+Now lets invoke it multiple times:
 
 ```python
 >>> greeting(0)
@@ -55,7 +55,7 @@ def square(x):
     return x * x
 ```
 
-Now lets invoke `do_map` by passing in `square`: 
+Now lets invoke `do_map` by passing in `square`:
 
 ```bash
 >>> do_map(square, [2, 4])
@@ -64,11 +64,11 @@ Now lets invoke `do_map` by passing in `square`:
 
 ## Types of functions
 
-There's two types of function you can create in python: compound functions and anonymous functions (lambdas). 
+There's two types of function you can create in python: compound functions and anonymous functions (lambdas).
 
 ### Compound functions
 
-Compound functions are the most common. Here's an example of one: 
+Compound functions are the most common. Here's an example of one:
 
 ```python
 def greeting():
@@ -91,9 +91,9 @@ As you can see, a function doesn't necessarily need to return a value. However, 
 
 ### Anonymous functions (lambdas)
 
-These are less common, but very useful in situations where you want a single-use function. 
+These are less common, but very useful in situations where you want a single-use function.
 
-For example: 
+For example:
 
 ```bash
 >>> do_map(lambda x: x * x, [2, 4])
@@ -108,7 +108,7 @@ You're allowed to bind lambda functions to names as well.
 [4, 16]
 ```
 
-Unlike compound functions, you're only allowed to have a single expression in the body of a lambda, and statements (such as assignment statements or control flow statements) are not permitted. 
+Unlike compound functions, you're only allowed to have a single expression in the body of a lambda, and statements (such as assignment statements or control flow statements) are not permitted.
 
 ```bash
 >>> lambda x: a = x
@@ -122,30 +122,30 @@ Compound functions support both positional parameters and named parameters. Lamb
 
 #### Compound function parameters
 
-**Positional** 
+**Positional**
 
 ```bash
 >>> def foo(a):
 ...     print(a)
-... 
+...
 >>> foo(1)
 1
 >>> def foo_two(a, b):
 ...     print(a)
 ...     print(b)
-... 
+...
 >>> foo_two(1, 2)
 1
 2
->>> 
+>>>
 ```
 
-**Named** 
+**Named**
 
 ```bash
 >>> def foo(a=None):
 ...     print(a)
-... 
+...
 >>> foo(1)
 1
 >>> foo()
@@ -153,7 +153,7 @@ None
 >>> def foo_two(a=None, b=2):
 ...     print(a)
 ...     print(b)
-... 
+...
 >>> foo_two(1, 3)
 1
 3
@@ -162,7 +162,7 @@ None
 2
 ```
 
-**Both** 
+**Both**
 
 ```bash
 >>> def foo(a, b, c=1, d=2):
@@ -170,7 +170,7 @@ None
 ...     print(b)
 ...     print(c)
 ...     print(d)
-... 
+...
 >>> foo('hello', 'world')
 hello
 world
@@ -181,19 +181,19 @@ hello
 world
 5
 7
->>> 
+>>>
 ```
 
 **Parameter unpacking**
 
-This is useful when you need to pass in a variable number of either positional arguments or keyword arguments. Prior to python 3.7 the [limit to the number of arguments](https://stackoverflow.com/questions/714475/what-is-a-maximum-number-of-arguments-in-a-python-function) was 255. 
+This is useful when you need to pass in a variable number of either positional arguments or keyword arguments. Prior to python 3.7 the [limit to the number of arguments](https://stackoverflow.com/questions/714475/what-is-a-maximum-number-of-arguments-in-a-python-function) was 255.
 
-Unpacking positional arguments: 
+Unpacking positional arguments:
 
 ```bash
 >>> def foo(*args):
 ...     print(args)
-... 
+...
 >>> foo(1, 2, 3, 4)
 (1, 2, 3, 4)
 ```
@@ -203,32 +203,32 @@ Unpacking keyword arguments:
 ```bash
 >>> def foo(**kwargs):
 ...     print(kwargs)
-... 
+...
 >>> foo(a=5, b=12)
 {'a': 5, 'b': 12}
 ```
 
-Unpacking both positional and keyword arguments: 
+Unpacking both positional and keyword arguments:
 
 ```bash
 >>> def foo(*args, **kwargs):
 ...     print(args)
 ...     print(kwargs)
-... 
+...
 >>> foo(1, 2, 3, a=4, b=5)
 (1, 2, 3)
 {'a': 4, 'b': 5}
->>> 
+>>>
 ```
 
 **Parameter ordering**
 
-The only order requirements for paramters is that positional parameters must come before keyword parameters. This is what will happen if you attempt to define name arguments before positional ones: 
+The only order requirements for paramters is that positional parameters must come before keyword parameters. This is what will happen if you attempt to define name arguments before positional ones:
 
 ```python
 >>> def foo(name=5, c):
-...     print(name) 
-... 
+...     print(name)
+...
   File "<stdin>", line 1
 SyntaxError: non-default argument follows default argument
 ```
