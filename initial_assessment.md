@@ -88,36 +88,67 @@ def foo(x):
 
 What's the output of `foo(True)`?
 
+Answer: 2. Yes we have a bad type operation but type errors only get caught when executed.
+
 # syntax error vs type errors
 
 ```python
 def foo(x):
   if x: 
-      return 1 + 'NaN'
-  return hello world 5 # Unsupported mix-type operation
+      return 1 + 1
+  return hello world 5
 ```
 
 What's the output of `foo(True)`?
 
+Answer: It's not 2! Our program actually crashes and throws a syntax error. Syntax errors are caught at _parse_ time.
+
 # operator precedence 
+
+## only arithmetic 
+
+`3 * 4 - 4` equals what? 
+
+Answer: 8. Multiplication has higher precedence than subtraction. The order of operations of mathematics is true here.
 
 ## comparison < arithmetic 
 
 `3 * 5 == 5 * 3` equals what?
 
+Answer: True! Arithmetic always happens before comparisons are done. This is equivalent to (3 * 5) == (5 * 3).
+
 ## multiple comparison operators
 
 `5 < 6 == True` equals what?
+
+Answer: False! You might have guessed that maybe perhaps comparison operaters since they all have equal precedence are left associative. In fact, what this expands to is an _and_  logical expression:  `5 < 6 and 6 == True`. Since the logical operators (and, or, not) are all lower in precedence than the relational operators, what we get is `(5 < 6) and (6 == True)` which is definitely false!
+
 `5 < 6 == 6` equals what? 
+
+Answer: Since this is 5 < 6 and 6 == 6, that's True.
+
 `3 * 5 == 5 * 3 < 5` equals what?
 
-## multiple arithmetic operators
+Answer: This expands into 15 == 15 and 15 < 5 which is False. Walking through each evaluation (I use parenthesis to show which expressions are evaluated first): 
 
-6 * 5 / 2
+```
+(3 * 5) == (5 * 3) < 5 
+(15) == (15 < 5)
+(15 == 15) and (15 < 5)
+True and False
+False
+```
 
 ## multiple logical / boolean operators
 
-True and False or True
+```python
+x = 0 and 0 or 1
+y = 1 or 0 and 0
+```
+
+What's the value of x and y? 
+
+Source: https://stackoverflow.com/questions/16679272/priority-of-the-logical-statements-not-and-or-in-pythonhttps://news.ycombinator.com/
 
 # truthiness and falsiness
 
@@ -125,13 +156,15 @@ True and False or True
 Class EmptyClass:
 	pass
 
-if [] or {} or "" or range(0) or EmptyClass():
+if 0 or 0.0 or [] or {} or "" or range(0) or EmptyClass():
 	print('Sup')
 ```
 
-Will `Sup` get printed?
+Will `Sup` be printed?
 
 https://docs.python.org/3/library/stdtypes.html#truth-value-testing
+
+Answer: Yes! Because all instances of objects are truthy - everything else on the list is false. There are two ways to make a class act false: define a __bool__ method that returns false or a __len__ method that returns 0.
 
 # functions
 
@@ -144,33 +177,68 @@ my_fn(5)
 
 Is this a valid program?
 
+Answer: No because lambda functions cannot contain assignment statements (or ANY statements for that matter such as if / for / while).
+
 
 ```python
 (lambda x, y=5: x * y)(5)
 ```
 
-prints out what? 
+Prints out what? 
 
+Answer: This immediately invoked lambda prints out 25. It binds 5 to the first argument and multiplies it by `y`.
 
-## parameter unpacking 
+## parameter packing, unpacking 
 
 ```python
 def foo(**args):
-	print(args)
+	 print(args)
 
 foo(1, 2, 3)
 ```
 
-## arg evaluation once
+Answer: This will throw an error because double asterisk is meant to unpack dictionaries
+
+```python
+def foo(**x):
+    print(x)
+
+def bar(x):
+    print('{a},{b},{c}'.format(**x))
 
 ```
+
+What does `foo(a=1,b=2,c=3)` print? What about `bar({'a': 1, 'b': 2, 'c': 3})`?
+
+## unpacking in general 
+
+```python
+'{}{}'.format(*[1, 2, 3, 4, 5])
+```
+
+What gets printed? 
+
+```python
+a = {'x': 5}
+b = {
+  **a, 
+  'y': 10
+}
+```
+
+What's the value of `b`? 
+
+https://www.python.org/dev/peps/pep-0448/
+
+## arg evaluation once
+
+```python
 def append_to(element, to=[]):
     to.append(element)
     return to
 ```
 
-
-What gets printed? 
+If I call `append_to(1)` 3 times, what's the return value of the final call to `append_to`? 
 
 ## parameter order
 
@@ -296,7 +364,6 @@ what gets printed?
 qq: add one about class attribute 
 
 ## Method resolution 
-
 
 ## class attr in hierachy 
 
@@ -506,9 +573,6 @@ https://docs.python-guide.org/writing/gotchas/
 Traceback (most recent call last):
   File "<stdin>", line 3, in <module>
 IndexError: list index out of range
-
-
-
 
 
 >>> def create_multipliers():
