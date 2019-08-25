@@ -1,8 +1,8 @@
-# names reference values 
+# names reference values
 
 ```python
-x = 7 
-y = x 
+x = 7
+y = x
 x = 11
 ```
 
@@ -13,7 +13,7 @@ Answer: names reference values. Assignments update reference to new object.
 
 ```python
 x = [1, 2, 3]
-y = x 
+y = x
 x = {}
 ```
 
@@ -21,7 +21,7 @@ What's the final value of `y`?
 
 Answer: same as above.
 
-# mutable vs immutable objects 
+# mutable vs immutable objects
 
 ```python
 x = 7
@@ -35,17 +35,17 @@ Answer: No. They start out referencing the same thing. The operation didn't muta
 
 ```python
 x = (1, 2)
-y = x 
+y = x
 x += (3,)
 ```
 
 Is x the same object as y? What are their values?
 
-Answer: Tuples are immutable. Same idea. 
+Answer: Tuples are immutable. Same idea.
 
 ```python
 x = 'hello'
-y = x 
+y = x
 x += ' world'
 print(x)
 print(y is x)
@@ -53,23 +53,23 @@ print(y is x)
 
 Is x the same object as y? What are their values?
 
-Answer: Strings are immutable. Same idea. 
+Answer: Strings are immutable. Same idea.
 
 ```python
 x = []
-y = x 
+y = x
 x += [1, 2]
 ```
 
 Is x the same object as y? What are their values?
 
-Answer: They are the same value! 
+Answer: They are the same value!
 
 https://stackoverflow.com/questions/2347265/why-does-behave-unexpectedly-on-lists?noredirect=1&lq=1
 
 ```python
 x = []
-y = x 
+y = x
 x.append(5)
 ```
 
@@ -77,11 +77,11 @@ Is x the same object as y? What are their values?
 
 Answer: Same as above! It's a mutation.
 
-# dynamic type checking 
+# dynamic type checking
 
 ```python
 def foo(x):
-  if x: 
+  if x:
       return 1 + 1
   return 1 + 'NaN' # Unsupported mix-type operation
 ```
@@ -94,7 +94,7 @@ Answer: 2. Yes we have a bad type operation but type errors only get caught when
 
 ```python
 def foo(x):
-  if x: 
+  if x:
       return 1 + 1
   return hello world 5
 ```
@@ -103,15 +103,15 @@ What's the output of `foo(True)`?
 
 Answer: It's not 2! Our program actually crashes and throws a syntax error. Syntax errors are caught at _parse_ time.
 
-# operator precedence 
+# operator precedence
 
-## only arithmetic 
+## only arithmetic
 
-`3 * 4 - 4` equals what? 
+`3 * 4 - 4` equals what?
 
 Answer: 8. Multiplication has higher precedence than subtraction. The order of operations of mathematics is true here.
 
-## comparison < arithmetic 
+## comparison < arithmetic
 
 `3 * 5 == 5 * 3` equals what?
 
@@ -123,16 +123,16 @@ Answer: True! Arithmetic always happens before comparisons are done. This is equ
 
 Answer: False! You might have guessed that maybe perhaps comparison operaters since they all have equal precedence are left associative. In fact, what this expands to is an _and_  logical expression:  `5 < 6 and 6 == True`. Since the logical operators (and, or, not) are all lower in precedence than the relational operators, what we get is `(5 < 6) and (6 == True)` which is definitely false!
 
-`5 < 6 == 6` equals what? 
+`5 < 6 == 6` equals what?
 
 Answer: Since this is 5 < 6 and 6 == 6, that's True.
 
 `3 * 5 == 5 * 3 < 5` equals what?
 
-Answer: This expands into 15 == 15 and 15 < 5 which is False. Walking through each evaluation (I use parenthesis to show which expressions are evaluated first): 
+Answer: This expands into 15 == 15 and 15 < 5 which is False. Walking through each evaluation (I use parenthesis to show which expressions are evaluated first):
 
 ```
-(3 * 5) == (5 * 3) < 5 
+(3 * 5) == (5 * 3) < 5
 (15) == (15 < 5)
 (15 == 15) and (15 < 5)
 True and False
@@ -146,7 +146,7 @@ x = 0 and 0 or 1
 y = 1 or 0 and 0
 ```
 
-What's the value of x and y? 
+What's the value of x and y?
 
 Source: https://stackoverflow.com/questions/16679272/priority-of-the-logical-statements-not-and-or-in-pythonhttps://news.ycombinator.com/
 
@@ -168,7 +168,7 @@ Answer: Yes! Because all instances of objects are truthy - everything else on th
 
 # functions
 
-## lambdas 
+## lambdas
 
 ```python
 my_fn = lambda x: a = x
@@ -184,11 +184,11 @@ Answer: No because lambda functions cannot contain assignment statements (or ANY
 (lambda x, y=5: x * y)(5)
 ```
 
-Prints out what? 
+Prints out what?
 
 Answer: This immediately invoked lambda prints out 25. It binds 5 to the first argument and multiplies it by `y`.
 
-## parameter packing, unpacking 
+## parameter packing, unpacking
 
 ```python
 def foo(**args):
@@ -210,25 +210,38 @@ def bar(x):
 
 What does `foo(a=1,b=2,c=3)` print? What about `bar({'a': 1, 'b': 2, 'c': 3})`?
 
-## unpacking in general 
+Answer: when you use ** in the paramter, it it packs it into a dictionary. When you use it as an argument, it unpacks it into positional arguments.
+
+## unpacking in general
 
 ```python
 '{}{}'.format(*[1, 2, 3, 4, 5])
 ```
 
-What gets printed? 
+What does this print?
+
+Answer: 12. Since it unpacks the list into arguments, the first two will be 1 and 2.
 
 ```python
 a = {'x': 5}
 b = {
-  **a, 
+  **a,
   'y': 10
 }
 ```
 
-What's the value of `b`? 
+What's the value of `b`?
 
 https://www.python.org/dev/peps/pep-0448/
+
+Answer: the value of `b` is ...
+
+```python
+{
+  'x': 5,
+  'y': 10
+}
+```
 
 ## arg evaluation once
 
@@ -238,7 +251,9 @@ def append_to(element, to=[]):
     return to
 ```
 
-If I call `append_to(1)` 3 times, what's the return value of the final call to `append_to`? 
+If I call `append_to(1)` 3 times, what's the return value of the final call to `append_to`?
+
+Answer: The return value will be `[1, 1, 1]`. When a function is defined, the paramters are evaluated _once_. That means `to` is bound to the object `[]` throughout its lifetime. So every mutation of the original list object will be persisted across calls.
 
 ## parameter order
 
@@ -250,23 +265,26 @@ def bar(name=5):
 	print(name)
 
 def star(name=5, c):
-	print(name) 
+	print(name)
 
 foo(1)
 bar()
 star()
 ```
 
-What gets printed? 
+What gets printed?
 
+Answer: 1, 5, and and error because you can't have positional arguments come after named.
 
-# dictionary comparisons 
+# dictionary comparisons
 
 What do each of the following three expressions evaluate to?
 
-1. `{} == {}` 
+1. `{} == {}`
 2. `{'a': 1} > {}`
 3. `{} < {}`
+
+Answer: True, Error, Error. Comparisons operators are not supported for dictionaries. The `==` operator evalutes to true if the key and values of the dictionary are equal. It performs a deep comparison.
 
 # mixed numeric operations
 
@@ -274,11 +292,15 @@ What do each of the following three expressions evaluate to?
 a = 5 * 2
 b = 5 / 2
 c = 5.0 * 2.0
-d = 5.0 * 2 
+d = 5.0 * 2
 e = 5.0 / 2
 ```
 
-# sequence comparisons 
+What are the values of a,b,c,e, and e?
+
+Answer: 10, 2.5, 10.0, 10.0, 2.5. Maybe you're suprised that 5 / 2 is a float, well in python 3 it performs float division by default. Second point is that when you mix float and integer, it's always float (narrower value expands to wider? )
+
+# sequence comparisons
 
 
 ```python
@@ -295,12 +317,9 @@ True
 >>>
 ```
 
-Which expressions are True? 
+Which expressions are True?
 
-
-# compiling process
-
-# scope 
+# scope
 
 ## Assignments always go to local scope
 
@@ -308,13 +327,13 @@ Which expressions are True?
 name = 'Joe'
 def foo():
 	name = 'Bob'
-	return name 
+	return name
 
 print(foo())
 print(name)
 ```
 
-What gets printed? 
+What gets printed?
 
 
 ```python
@@ -337,7 +356,7 @@ def foo():
 
 What does this print?
 
-## name resolution 
+## name resolution
 
 ```python
 name = 'Bob'
@@ -361,74 +380,72 @@ fn()
 
 what gets printed?
 
-qq: add one about class attribute 
+qq: add one about class attribute
 
-## Method resolution 
+## Method resolution
 
-## class attr in hierachy 
+## class attr in hierachy
 
 class A:
   x = 12
 
 class B(A):
-  pass 
+  pass
 
 print(B.x)
 
 What gets printed ?
 
-## depth first 
+## depth first
 
 class A():
   def save(self):
     print('A.save')
 
 class B(A):
-  pass 
+  pass
 
 class C():
   def save(self):
-    print('C.save') 
+    print('C.save')
 
 class D(B, C):
   pass
 
-
-
 ## Instance method in hierarchy
 class A:
-  def save(self): 
+  def save(self):
     print(self)
 
 class B(A):
-  pass 
+  pass
 
 print(B().save())
 
-What gets printed? 
+What gets printed?
 
-## diamond inheritance 
+## diamond inheritance
 
 class A:
-  def save(self): 
+  def save(self):
     print('A.save')
 
 class B(A):
-  pass 
+  pass
 
 class C(A):
   def save(self):
     print('C.save')
 
 class D(B, C):
-  pass 
+  pass
 
 print(D().save())
 
 ## diamond special case
 
 class A:
-  def save(self): 
+  def save(self):
     print('A.save')
 
 class B(A):
@@ -440,7 +457,7 @@ class C(A):
     print('C.save')
 
 class D(B, C):
-  pass 
+  pass
 
 class E(C, B):
   pass
@@ -458,7 +475,7 @@ https://www.python.org/download/releases/2.3/mro/
 
 
 
-# iterators 
+# iterators
 
 [1, 2, 3] <- iterable
 iter(1, 2, 3) <- iterator + iterable
@@ -468,14 +485,14 @@ range(5) <- iterable
 (x for x in [1, 2, 3]) <- iterator + iterable
 
 
-which of the following objects are iterators? which ones are iterables? 
+which of the following objects are iterators? which ones are iterables?
 
 
-wat does the following print 
+wat does the following print
 
 next([1, 2, 3])
 
-# function closures 
+# function closures
 
 ## updating a variable
 
@@ -484,16 +501,16 @@ def foo():
   x = 5
   def bar(y):
     return y + x
-  return bar 
+  return bar
 
-foo()(5) 
+foo()(5)
 
 The return value of `foo` is the closure.
 
 
- while a closure is an instance of a function, a value, whose 
+ while a closure is an instance of a function, a value, whose
 
- > non-local variables have been bound either to values or to storage locations (depending on the language; see the lexical environment section below). 
+ > non-local variables have been bound either to values or to storage locations (depending on the language; see the lexical environment section below).
 
 >  if functions with free variables are first-class, then returning one creates a closure.
 
@@ -502,25 +519,25 @@ The return value of `foo` is the closure.
 
 TBD
 
-# generators 
+# generators
 
 ## generator function vs generator object (iterator)
 
 ```python
 def foo():
   for i in range(1, 4):
-    yield i 
+    yield i
 ```
 
 >>> my_gen = foo()
 
 
 ```python
-def foo(): 
+def foo():
   print('about to yield 1 ...')
-  yield 1 
+  yield 1
   print('about to yield 2 ...')
-  yield 2 
+  yield 2
   print('about to yield 3 ...')
   yield 3
 ```
@@ -531,7 +548,7 @@ my_gen = foo()
 
 # decorators (TBD)
 
-# classes 
+# classes
 
 ```
 class Foo:
@@ -540,7 +557,7 @@ class Foo:
   	print('This is bar method')
 ```
 
-What gets printed when I run this file? 
+What gets printed when I run this file?
 
 ```
 class Foo:
@@ -559,8 +576,6 @@ def foo(bar=[]):
 
 If I call foo 4 times, what is the rseult?g
 https://docs.python-guide.org/writing/gotchas/
-
-
 
 ## exceptions (TBD)
 
