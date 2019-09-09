@@ -394,22 +394,38 @@ Answer: 7, 11, 'c'. The local parameters mask the ones in the enclosing function
 
 ```
 
-## Method resolution
-
 ## class attr in hierachy
 
+```python
 class A:
   x = 12
 
 class B(A):
   pass
+```
 
-print(B.x)
+What's the value of `B.x`?
 
-What gets printed ?
+Answer: `12`. It will look up `x` in class `B` and since it can't find it, it will look for it in the parent.
 
-## depth first
+## Method resolution
 
+```python
+class A:
+  def save(self):
+    print('Hello!')
+
+class B(A):
+  pass
+```
+
+What's printed by `B().save()`?
+
+Answer: `Hello!` gets printed. It will look up the instance method on the parent class.
+
+## multiple inheritance: depth first
+
+```python
 class A():
   def save(self):
     print('A.save')
@@ -423,21 +439,15 @@ class C():
 
 class D(B, C):
   pass
+```
 
-## Instance method in hierarchy
-class A:
-  def save(self):
-    print(self)
+What gets printed by invoking `D().save()`?
 
-class B(A):
-  pass
-
-print(B().save())
-
-What gets printed?
+Answer: `A.save`. 
 
 ## diamond inheritance
 
+```python
 class A:
   def save(self):
     print('A.save')
@@ -451,12 +461,16 @@ class C(A):
 
 class D(B, C):
   pass
+```
 
-print(D().save())
+What gets printed by `D().save()`? 
+
+Answer: `C.save`. Did that suprise you? If we were to follow the depth first rule, we should have seen `A.save` printed. In reality, python will look up the name in more specialized (less general, more concrete) parent first if they both share the same ancestor.
 
 ## diamond special case
 
-class A:
+```python
+class A(object):
   def save(self):
     print('A.save')
 
@@ -476,8 +490,20 @@ class E(C, B):
 
 class F(D, E):
   pass
+```
 
-print(F().save())
+What gets printed by `F().save()`?
+
+Answer: This program will actually return an error at parse time.
+
+```python
+TypeError: Cannot create a consistent method resolution
+order (MRO) for bases B, C
+```
+
+Python has a method resolution order algorithm that detects ambiguity in the inheritance chain. In this case, D comes before E so we expect to look up D first. But should we look at B first or C first? There's order disagreement between `D` and `E`. Previously, this was allowed but it leads to inconsistent behavior (sometimes a method in C gets called first, other times it's a method in B). Now, inconsistency in order is no longer allowed.
+
+Resources:
 
 https://python-history.blogspot.com/2010/06/method-resolution-order.html
 https://en.wikipedia.org/wiki/Monotonic_function
@@ -485,7 +511,30 @@ https://www.python.org/download/releases/2.3/mro/
 
 ## class attrs are shared with instances
 
+```python
+class A:
+  x = 1
 
+class B(A):
+  pass 
+
+class C(A):
+  pass
+
+print("{}, {}".format(B.x, C.x))
+A.x = 12 
+print("{}, {}".format(B.x, C.x))
+```
+
+What gets printed?
+
+Answer: 
+
+>>> print("{}, {}".format(B.x, C.x))
+1, 1
+>>> A.x = 12 
+>>> print("{}, {}".format(B.x, C.x))
+12, 12
 
 # iterators
 
