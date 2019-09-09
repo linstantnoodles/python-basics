@@ -302,22 +302,17 @@ Answer: 10, 2.5, 10.0, 10.0, 2.5. Maybe you're suprised that 5 / 2 is a float, w
 
 # sequence comparisons
 
-
 ```python
->>> 'alan' < 'alba'
-True
->>> 'alan' < 'alan'
-False
->>> [1, 2, 3] < [3, 2, 1]
-True
->>> [99, 2, 3] < [3, 2, 1]
-False
->>> [1, 2, 3] == [1, 2, 3]
-True
->>>
+a = 'alan' < 'alba'
+b = 'alan' < 'alan'
+c = [1, 2, 3] < [3, 2, 1]
+d = [99, 2, 3] < [3, 2, 1]
+e = [1, 2, 3] == [1, 2, 3]
 ```
 
 Which expressions are True?
+
+Answer: a, c, and e. Python uses lexicographic comparison on lists. So it compares first of each, then second of both, etc.
 
 # scope
 
@@ -335,6 +330,8 @@ print(name)
 
 What gets printed?
 
+Answer: 'Bob' and 'Joe'. Assignments always go to the local scope, regardless of whether or not there's the same name in an enclosing scope. So the local namespace gets a new binding.
+
 
 ```python
 numbers = [1, 2, 3]
@@ -344,6 +341,12 @@ def foo():
 ```
 
 What does `foo()` print?
+
+Answer: There will be an `UnboundLocalError` because assignments expect the name to be in local scope. `+=` contains an assignment, so `numbers` is expected to exist locally.
+
+https://docs.python.org/3/faq/programming.html
+
+> If a variable is assigned a value anywhere within the function’s body, it’s assumed to be a local unless explicitly declared as global.
 
 ## function is smallest possible name space creating block
 
@@ -355,6 +358,8 @@ def foo():
 ```
 
 What does this print?
+
+Answer: 5. `a` is visible to the entire function. `if` does not create a new namespace.
 
 ## name resolution
 
@@ -368,6 +373,8 @@ def foo():
 
 What's the value of `foo()`?
 
+Answer: `Bob`. The lookup is local, nearest enclosing function, then global.
+
 ```python
 def fn():
     a = 'a'
@@ -378,9 +385,14 @@ def fn():
 fn()
 ```
 
-what gets printed?
+What gets printed?
 
-qq: add one about class attribute
+Answer: 7, 11, 'c'. The local parameters mask the ones in the enclosing function.
+
+
+```python
+
+```
 
 ## Method resolution
 
@@ -529,7 +541,7 @@ def foo():
     yield i
 ```
 
->>> my_gen = foo()
+my_gen = foo()
 
 
 ```python
