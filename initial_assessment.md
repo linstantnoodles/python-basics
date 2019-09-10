@@ -536,82 +536,69 @@ Answer:
 >>> print("{}, {}".format(B.x, C.x))
 12, 12
 
-# iterators
+# iterators vs iterables
 
-[1, 2, 3] <- iterable
-iter(1, 2, 3) <- iterator + iterable
-{} <- iterable
-range(5) <- iterable
-[x for x in [1, 2, 3]] <- list iterable
-(x for x in [1, 2, 3]) <- iterator + iterable
+Given the following objects:
 
+```
+a = [1, 2, 3]
+b = iter(1, 2, 3) 
+c = {} 
+d = range(5) 
+e = [x for x in [1, 2, 3]]
+f = (x for x in [1, 2, 3])
+```
 
-which of the following objects are iterators? which ones are iterables?
+Which ones are strictly iterators?
+Which ones are strictly iterables? 
+Which ones are both iterators and iterables? 
 
+Answer: a, c, d, and e are strictly iterables. b and f are both iterators and iterables.  All iterators are iterables, but not all iterables are iterators. There are no objects that are strictly iterators. All the built-in iterators are _also_ iterables in python (because you can call `__iter__` on them!).
 
-wat does the following print
+What happens if you evaluate `next([1, 2, 3])`?
 
-next([1, 2, 3])
+Answer: You get a type error because the list object is not an iterator!
 
 # function closures
 
-## updating a variable
-
-
+```python
 def foo():
   x = 5
   def bar(y):
     return y + x
   return bar
+```
 
-foo()(5)
+What's the value of `foo()(5)`?
 
-The return value of `foo` is the closure.
+Answer: 10! The return value of `foo` is the closure. It has references to non-local variables (free variables). The `y` is the free variable.
 
+```python
+def foo():
+  x = 5
+  def bar(y):
+    x += y
+  bar(10)
+  print(x)
+```
 
- while a closure is an instance of a function, a value, whose
+What's wrong with this program? If we wanted `print(x)` to output `15`, what change in `bar` will be required? 
 
- > non-local variables have been bound either to values or to storage locations (depending on the language; see the lexical environment section below).
-
->  if functions with free variables are first-class, then returning one creates a closure.
-
-
-# first class functions (put with closures??)
-
-TBD
+Answer: The `nonlocal` keyword will be required. See https://www.python.org/dev/peps/pep-3104/.
 
 # generators
 
-## generator function vs generator object (iterator)
-
 ```python
 def foo():
-  for i in range(1, 4):
-    yield i
-```
-
-my_gen = foo()
-
-
-```python
-def foo():
-  print('about to yield 1 ...')
   yield 1
-  print('about to yield 2 ...')
   yield 2
-  print('about to yield 3 ...')
-  yield 3
 ```
 
-my_gen = foo()
-```
-
-
-# decorators (TBD)
+What gets returned by `foo()`?
 
 # classes
 
-```
+```python
 class Foo:
   print('This is foo class')
   def bar(self):
@@ -620,12 +607,16 @@ class Foo:
 
 What gets printed when I run this file?
 
-```
+Answer: 'This is foo class' will get printed because the body of the function is evaluated at runtime.
+
+```python
 class Foo:
 	print(Foo)
 ```
 
-What gets printed when I run this one?
+What gets printed in this program? 
+
+Answer: Nothing - you get a name error because `Foo` is not yet defined. The class only exists after the entire body has been parsed (hence anything inside the body that attempts to refer to the class during parse time will fail).
 
 # Others
 
@@ -633,36 +624,32 @@ What gets printed when I run this one?
 def foo(bar=[]):
   bar.append("baz")
   return bar
+
+foo()
+foo()
+foo()
 ```
 
-If I call foo 4 times, what is the rseult?g
+What's the result of the final call to `foo` above? 
+
+Answer: ['baz', 'baz', 'baz']. Parameter are evaluated once during function creation - not on every invocation.
+
 https://docs.python-guide.org/writing/gotchas/
 
-## exceptions (TBD)
+## Exception handling
 
->>> try:
-...     l = ["a", "b"]
-...     int(l[2])
-... except ValueError, IndexError:  # To catch both exceptions, right?
-...     pass
-...
-Traceback (most recent call last):
-  File "<stdin>", line 3, in <module>
-IndexError: list index out of range
+```
+try:
+  x = [1, 2, 3]
+  x[3] + 'NaN'
+except TypeError, IndexError:
+  pass
+```
 
+What happens when this is executed?
 
->>> def create_multipliers():
-...     return [lambda x : i * x for i in range(5)]
->>> for multiplier in create_multipliers():
-...     print multiplier(2)
-...
+Answer: A syntax error gets thrown. You need to wrap the exceptions in a parenthesis (a tuple).
 
->>> def create_multipliers():
-...     return [lambda x, i=i : i * x for i in range(5)]
-...
->>> for multiplier in create_multipliers():
-...     print multiplier(2)
-...
-
+# decorators (TBD)
 
 # Imports TBD
