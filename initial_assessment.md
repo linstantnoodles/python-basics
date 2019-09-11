@@ -678,3 +678,17 @@ from .bathroom import bob
 ```
 
 Answer: only the last one (containing leading dot) is a relative import. The first two perform absolute imports. While `import bob` will attempt to find the module `bob` using the absolute import lookup process, `from bathroom import bob` will attempt to find the package `bathroom` first using the same process. 
+
+# Process
+
+1. Send a link for payment 
+2. Receieve assessment with instructions 
+3. Once assessment complete, option to book / schedule a session
+
+- what would i want the session to look like? i would want it tailored to my weaknesses. That means for each area, there should be exercises that Im provided with to ensure that I actually improve / elevate my skills. 
+4. Hour 1: Go through answers. Hour 2: Wild card?
+
+
+Or 
+
+1. Start assessment right away. Go through it live. 
