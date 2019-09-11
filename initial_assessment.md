@@ -650,6 +650,31 @@ What happens when this is executed?
 
 Answer: A syntax error gets thrown. You need to wrap the exceptions in a parenthesis (a tuple).
 
-# decorators (TBD)
+# Decorators
 
-# Imports TBD
+```python
+def like_a_boss_decorator(fn):
+  def wrapper(*args, **kwargs):
+    return "{}, like a boss".format(fn(*args, **kwargs))
+  return wrapper  
+
+@like_a_boss_decorator
+def action():
+  return "Eating"
+```
+
+What is the value of `action()`?
+
+Answer: `Eating, like a boss`. The function is decorated by the wrapper which calls it with the extra text. Like a boss.
+
+# Imports 
+
+Which of the following performs a relative import?
+
+```python
+import bob
+from bathroom import bob 
+from .bathroom import bob 
+```
+
+Answer: only the last one (containing leading dot) is a relative import. The first two perform absolute imports. While `import bob` will attempt to find the module `bob` using the absolute import lookup process, `from bathroom import bob` will attempt to find the package `bathroom` first using the same process. 

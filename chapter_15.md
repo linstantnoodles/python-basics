@@ -272,16 +272,7 @@ there WOULD be if the directory containing our main.py was considered a package 
 i.e app.volcano
 
 
-
-
-
-
 ModuleNotFoundError: No module named '__main__.volcanos'; '__main__' is not a package
-
-
-
-
-
 
 https://docs.python.org/3/reference/import.html#package-relative-imports
 
